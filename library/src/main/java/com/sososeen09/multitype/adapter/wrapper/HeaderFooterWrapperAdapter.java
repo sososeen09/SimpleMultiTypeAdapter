@@ -1,4 +1,4 @@
-package com.sososeen09.multitype.adapter.base;
+package com.sososeen09.multitype.adapter.wrapper;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

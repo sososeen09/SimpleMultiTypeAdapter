@@ -9,6 +9,7 @@ import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
+import com.sososeen09.multitype.adapter.wrapper.HeaderFooterWrapperAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

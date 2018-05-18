@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sososeen09.multitype.adapter.base.HeaderFooterWrapperAdapter;
+import com.sososeen09.multitype.adapter.wrapper.HeaderFooterWrapperAdapter;
 import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
 import com.sososeen09.multitype.adapter.base.BaseMultiAdapter;
 import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
