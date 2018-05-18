@@ -5,6 +5,8 @@ import android.view.View;
 
 import java.util.List;
 
+import me.drakeet.multitype.Linker;
+
 /**
  * Created on 2018/5/17.
  *
@@ -13,7 +15,7 @@ import java.util.List;
 
 public interface MultiTypeContract {
 
-    <T> void register(Class<T> tClass, ItemViewBinder<T, ?> itemViewBinder);
+    <T> void register(Class<T> tClass, AbstractItemViewBinder<T, ?> itemViewBinder);
 
     RecyclerView.Adapter getAdapter();
 
@@ -26,7 +28,7 @@ public interface MultiTypeContract {
 
     void setOnItemChildClickListener(OnItemChildClickListener onItemChildClickListener);
 
-    <T> void register(Class<? extends T> clazz, ItemViewBinder<T, ?> binder, Linker<T> linker);
+    <T> void register(Class<? extends T> clazz, AbstractItemViewBinder<T, ?> binder, Linker<T> linker);
 
 
     /**

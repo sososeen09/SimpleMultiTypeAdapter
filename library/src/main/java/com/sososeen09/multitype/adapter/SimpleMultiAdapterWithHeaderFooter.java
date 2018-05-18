@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.drakeet.multitype.Linker;
+import me.drakeet.multitype.MultiTypePool;
+import me.drakeet.multitype.TypePool;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -37,7 +40,7 @@ public class SimpleMultiAdapterWithHeaderFooter extends RecyclerView.Adapter<Rec
     private LinearLayout mFooterLayout;
 
     private @NonNull
-    TypeManager mTypeManager;
+    TypePool mTypePool;
 
     public static final int HEADER_VIEW = 0x00000222;
     public static final int FOOTER_VIEW = 0x00000333;
@@ -50,7 +53,7 @@ public class SimpleMultiAdapterWithHeaderFooter extends RecyclerView.Adapter<Rec
 
     public SimpleMultiAdapterWithHeaderFooter(List<?> data) {
         mData = data == null ? new ArrayList<>() : data;
-        mTypeManager = new MultiTypeManager();
+        mTypePool = new MultiTypePool();
     }
 
     @Override
@@ -58,17 +61,17 @@ public class SimpleMultiAdapterWithHeaderFooter extends RecyclerView.Adapter<Rec
         if (mLayoutInflater == null) {
             mLayoutInflater = LayoutInflater.from(parent.getContext());
         }
-        ItemViewBinder<?, ?> itemViewBinder = findViewBinder(viewType);
+        AbstractItemViewBinder<?, ?> itemViewBinder = findViewBinder(viewType);
         return itemViewBinder.onCreateViewHolder(mLayoutInflater, parent);
     }
 
-    private ItemViewBinder<?, ?> findViewBinder(int viewType) {
+    private AbstractItemViewBinder<?, ?> findViewBinder(int viewType) {
         if (viewType == HEADER_VIEW) {
             return new HeaderFooterViewBinder<>(mHeaderLayout);
         } else if (viewType == FOOTER_VIEW) {
             return new HeaderFooterViewBinder<>(mFooterLayout);
         }
-        return mTypeManager.getItemViewBinder(viewType);
+        return (AbstractItemViewBinder<?, ?>) mTypePool.getItemViewBinder(viewType);
     }
 
     @Override
@@ -83,7 +86,7 @@ public class SimpleMultiAdapterWithHeaderFooter extends RecyclerView.Adapter<Rec
                 break;
             default:
                 Object item = mData.get(position - getHeaderLayoutCount());
-                ItemViewBinder binder = mTypeManager.getItemViewBinder(holder.getItemViewType());
+                AbstractItemViewBinder binder = (AbstractItemViewBinder) mTypePool.getItemViewBinder(holder.getItemViewType());
                 binder.onBindViewHolder(holder, item);
 
                 break;
@@ -127,10 +130,10 @@ public class SimpleMultiAdapterWithHeaderFooter extends RecyclerView.Adapter<Rec
     }
 
     private int indexInTypesOf(int position, Object item) {
-        int index = mTypeManager.firstIndexOf(item.getClass());
+        int index = mTypePool.firstIndexOf(item.getClass());
         if (index != -1) {
             @SuppressWarnings("unchecked")
-            Linker<Object> linker = (Linker<Object>) mTypeManager.getLinker(index);
+            Linker<Object> linker = (Linker<Object>) mTypePool.getLinker(index);
             return index + linker.index(position, item);
         }
 
@@ -276,8 +279,8 @@ public class SimpleMultiAdapterWithHeaderFooter extends RecyclerView.Adapter<Rec
     }
 
     @Override
-    public <T> void register(Class<T> tClass, ItemViewBinder<T, ?> itemViewBinder) {
-        mTypeManager.register(tClass, itemViewBinder, new DefaultLinker<T>());
+    public <T> void register(Class<T> tClass, AbstractItemViewBinder<T, ?> itemViewBinder) {
+        mTypePool.register(tClass, itemViewBinder, new DefaultLinker<T>());
     }
 
     @Override
@@ -310,7 +313,7 @@ public class SimpleMultiAdapterWithHeaderFooter extends RecyclerView.Adapter<Rec
     }
 
     @Override
-    public <T> void register(Class<? extends T> clazz, ItemViewBinder<T, ?> binder, Linker<T> linker) {
+    public <T> void register(Class<? extends T> clazz, AbstractItemViewBinder<T, ?> binder, Linker<T> linker) {
 
     }
 }

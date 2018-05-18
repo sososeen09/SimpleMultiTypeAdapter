@@ -52,14 +52,14 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
 
         mBaseQuickWrapperAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
-            protected void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
+            public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
                 holder.setText(R.id.tv, item);
             }
         });
 
         mBaseQuickWrapperAdapter.register(Integer.class, new BaseItemViewBinder<Integer, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
-            protected void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull Integer item) {
+            public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull Integer item) {
                 holder.setText(R.id.tv, "this is integer item: " + item).setBackgroundColor(R.id.tv, Color.BLUE);
             }
         });

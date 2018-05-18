@@ -13,7 +13,7 @@ import android.view.ViewGroup;
  * @author sososeen09
  */
 
-public class HeaderFooterViewBinder<T> extends ItemViewBinder<T, RecyclerView.ViewHolder> {
+public class HeaderFooterViewBinder<T> extends AbstractItemViewBinder<T, RecyclerView.ViewHolder> {
 
     private final View mView;
 
@@ -23,12 +23,12 @@ public class HeaderFooterViewBinder<T> extends ItemViewBinder<T, RecyclerView.Vi
 
     @NonNull
     @Override
-    protected RecyclerView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    public final RecyclerView.ViewHolder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         return new RecyclerView.ViewHolder(mView){};
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @NonNull Object item) {
+    public final void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @NonNull Object item) {
 
     }
 }

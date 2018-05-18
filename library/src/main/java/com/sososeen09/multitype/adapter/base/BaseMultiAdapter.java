@@ -110,6 +110,11 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
     }
 
 
+    /**
+     * set the OffsetDelegate, it the adapter has header, the data position with ViewHolder position is not equal,
+     * the {@link OffsetDelegate} help to find the correct position between the ViewHolder's itemView with it's data
+     * @param offsetDelegate
+     */
     public void setOffsetDelegate(OffsetDelegate offsetDelegate) {
         this.mOffsetDelegate = offsetDelegate;
     }

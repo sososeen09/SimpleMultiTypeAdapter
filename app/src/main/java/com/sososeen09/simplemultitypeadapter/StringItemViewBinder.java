@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.sososeen09.multitype.adapter.ItemViewBinder;
+import com.sososeen09.multitype.adapter.AbstractItemViewBinder;
 
 /**
  * Created on 2018/5/17.
@@ -15,17 +15,17 @@ import com.sososeen09.multitype.adapter.ItemViewBinder;
  * @author sososeen09
  */
 
-public class StringItemViewBinder extends ItemViewBinder<String, StringItemViewBinder.Holder> {
+public final class StringItemViewBinder extends AbstractItemViewBinder<String, StringItemViewBinder.Holder> {
 
     @NonNull
     @Override
-    protected Holder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    public Holder onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View view = inflater.inflate(R.layout.item_multi, parent, false);
         return new Holder(view);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull Holder holder, @NonNull String item) {
+    public void onBindViewHolder(@NonNull Holder holder, @NonNull String item) {
         holder.tv.setText(item);
     }
 

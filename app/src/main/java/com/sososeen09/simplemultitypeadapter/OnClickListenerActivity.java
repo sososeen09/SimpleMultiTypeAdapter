@@ -14,6 +14,7 @@ import com.sososeen09.multitype.adapter.base.HeaderFooterWrapperAdapter;
 import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
 import com.sososeen09.multitype.adapter.base.BaseMultiAdapter;
 import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
+import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 
@@ -54,14 +55,14 @@ public class OnClickListenerActivity extends AppCompatActivity implements View.O
 
         baseMultiAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
-            protected void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
+            public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
                 holder.setText(R.id.tv, item);
             }
         });
 
         baseMultiAdapter.register(Integer.class, new BaseItemViewBinder<Integer, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
-            protected void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull Integer item) {
+            public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull Integer item) {
                 holder.setText(R.id.tv, "this is integer item: " + item).setBackgroundColor(R.id.tv, Color.BLUE);
             }
         });
@@ -80,7 +81,12 @@ public class OnClickListenerActivity extends AppCompatActivity implements View.O
         }
 
         baseMultiAdapter.setItems(items);
-
+        baseMultiAdapter.setOffsetDelegate(new OffsetDelegate() {
+            @Override
+            public int getOffsetPosition() {
+                return mHeaderFooterWrapperAdapter.getHeaderLayoutCount();
+            }
+        });
         baseMultiAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(OnClickAdapterContract adapter, View view, int position) {

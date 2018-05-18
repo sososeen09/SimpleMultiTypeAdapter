@@ -6,21 +6,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sososeen09.multitype.adapter.AbstractItemViewBinder;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import me.drakeet.multitype.ItemViewBinder;
 import me.drakeet.multitype.MultiTypeAdapter;
 
 /**
  * @author sososeen09
  */
 
-public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> extends ItemViewBinder<T, VH> {
+public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> extends AbstractItemViewBinder<T, VH> {
 
+    private View mItemView;
     private @LayoutRes
     int layoutId;
 
@@ -28,14 +30,26 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
         this.layoutId = layout;
     }
 
+    public BaseItemViewBinder(@NonNull View itemView){
+        this.mItemView = itemView;
+    }
+
     @NonNull
     @Override
-    protected VH onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+    public final VH onCreateViewHolder(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         VH baseMultiViewHolder;
-        View view = inflater.inflate(layoutId, parent, false);
+        View view = getItemView(inflater, parent);
         baseMultiViewHolder = onCreateDefViewHolder(view);
         onViewHolderCreated(baseMultiViewHolder);
         return baseMultiViewHolder;
+    }
+
+    private View getItemView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
+        if (mItemView != null) {
+            return mItemView;
+
+        }
+        return inflater.inflate(layoutId, parent, false);
     }
 
     /**
