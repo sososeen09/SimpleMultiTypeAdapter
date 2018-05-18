@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
+import com.sososeen09.multitype.adapter.contract.ViewBindClickContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 
@@ -16,10 +17,12 @@ import me.drakeet.multitype.MultiTypeAdapter;
 import me.drakeet.multitype.TypePool;
 
 /**
+ *
+ * the BaseMultiAdapter is used for add the OnClickListener
  * @author sososeen09
  */
 
-public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapterContract {
+public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapterContract ,ViewBindClickContract{
     private OnItemClickListener mOnItemClickListener;
     private OnItemChildClickListener mOnItemChildClickListener;
     private OffsetDelegate mOffsetDelegate;
@@ -110,11 +113,7 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
     }
 
 
-    /**
-     * set the OffsetDelegate, it the adapter has header, the data position with ViewHolder position is not equal,
-     * the {@link OffsetDelegate} help to find the correct position between the ViewHolder's itemView with it's data
-     * @param offsetDelegate
-     */
+    @Override
     public void setOffsetDelegate(OffsetDelegate offsetDelegate) {
         this.mOffsetDelegate = offsetDelegate;
     }

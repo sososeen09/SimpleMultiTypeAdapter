@@ -1,7 +1,6 @@
 package com.sososeen09.multitype.adapter.contract;
 
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
@@ -43,9 +42,4 @@ public interface OnClickAdapterContract {
     @Nullable
     OnItemChildClickListener getOnItemChildClickListener();
 
-    /**
-     * ViewHolder's itemView may set OnClickListener,the implemention of OnClickAdapterContract should handle it
-     * @param viewHolder
-     */
-    void bindViewClickListener(RecyclerView.ViewHolder viewHolder);
 }

@@ -156,8 +156,10 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
     private void bindViewClickListener(BaseMultiViewHolder baseMultiViewHolder) {
         MultiTypeAdapter adapter = getAdapter();
         if (adapter instanceof BaseMultiAdapter) {
-            ((BaseMultiAdapter) adapter).bindViewClickListener(baseMultiViewHolder);
-            baseMultiViewHolder.setAdapter(((BaseMultiAdapter) adapter));
+            BaseMultiAdapter baseMultiAdapter = (BaseMultiAdapter) adapter;
+            baseMultiAdapter.bindViewClickListener(baseMultiViewHolder);
+            baseMultiViewHolder.setAdapter(baseMultiAdapter);
         }
     }
+
 }

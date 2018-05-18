@@ -21,7 +21,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * Created on 2018/5/17.
  *
  * @author sososeen09
- *         <p>
+ *
  *         参考 {@link  android.widget.HeaderViewListAdapter}
  */
 

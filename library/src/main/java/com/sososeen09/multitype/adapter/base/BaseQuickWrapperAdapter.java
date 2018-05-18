@@ -36,7 +36,7 @@ public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implemen
         super(baseMultiAdapter);
         this.mBaseMultiAdapter = baseMultiAdapter;
 
-        OffsetDelegate offsetDelegate=new OffsetDelegate() {
+        OffsetDelegate offsetDelegate = new OffsetDelegate() {
             @Override
             public int getOffsetPosition() {
                 return getHeaderLayoutCount();
@@ -65,11 +65,6 @@ public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implemen
     @Override
     public OnItemChildClickListener getOnItemChildClickListener() {
         return mBaseMultiAdapter.getOnItemChildClickListener();
-    }
-
-    @Override
-    public void bindViewClickListener(final RecyclerView.ViewHolder baseViewHolder) {
-        mBaseMultiAdapter.bindViewClickListener(baseViewHolder);
     }
 
     /**
