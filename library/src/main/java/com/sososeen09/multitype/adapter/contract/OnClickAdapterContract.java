@@ -1,6 +1,7 @@
 package com.sososeen09.multitype.adapter.contract;
 
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
@@ -14,17 +15,20 @@ import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 public interface OnClickAdapterContract {
 
     /**
-     * Register a callback to be invoked when an item in this RecyclerView has
-     * been clicked.
+     * RecyclerView is nonsupport for set item click listener,as {@link android.widget.ListView}，
+     * but the function is necessary。so add it。
+     * the {@link OnItemClickListener#onItemClick(OnClickAdapterContract, View, int)} method will be called when user
+     * click the item if be set
      *
-     * @param listener The callback that will be invoked.
+     * @param listener The callback which you want to receive the item click event
      */
     void setOnItemClickListener(@Nullable OnItemClickListener listener);
 
     /**
-     * @return The callback to be invoked with an item in this RecyclerView has
-     * been clicked and held, or null id no callback as been set.
+     * @return The callback which you want to receive the item click event
+     * it may be null if not set.
      */
+    @Nullable
     OnItemClickListener getOnItemClickListener();
 
     /**
@@ -33,7 +37,7 @@ public interface OnClickAdapterContract {
      *
      * @param listener The callback that will run
      */
-    void setOnItemChildClickListener(OnItemChildClickListener listener);
+    void setOnItemChildClickListener(@Nullable OnItemChildClickListener listener);
 
     /**
      * @return The callback to be invoked with an itemchild in this RecyclerView has

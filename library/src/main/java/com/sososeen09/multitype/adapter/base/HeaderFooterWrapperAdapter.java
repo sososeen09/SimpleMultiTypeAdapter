@@ -21,8 +21,11 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
     private final RecyclerView.Adapter mWrapperd;
     public static final int HEADER_VIEW = 0x00002222;
     public static final int FOOTER_VIEW = 0x00003333;
-    //header footer
+
+    //header
     private LinearLayout mHeaderLayout;
+
+    //footer
     private LinearLayout mFooterLayout;
 
     public HeaderFooterWrapperAdapter(RecyclerView.Adapter adapter) {

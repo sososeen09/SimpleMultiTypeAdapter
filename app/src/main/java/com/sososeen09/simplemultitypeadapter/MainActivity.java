@@ -13,13 +13,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void simpleMulti(View view) {
-        startActivity(new Intent(this, SimpleMultiAdapterActivity.class));
-    }
-
-    public void wrapperAdapter(View view) {
-        startActivity(new Intent(this, WrapperAdapterActivity.class));
-    }
 
     public void onClickTest(View view) {
         startActivity(new Intent(this, OnClickListenerActivity.class));

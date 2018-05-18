@@ -17,12 +17,13 @@ import me.drakeet.multitype.MultiTypeAdapter;
 import me.drakeet.multitype.TypePool;
 
 /**
+ * the BaseMultiAdapter is used to enhance the ability for
+ * add {@link OnItemClickListener} and {@link OnItemChildClickListener}
  *
- * the BaseMultiAdapter is used for add the OnClickListener
  * @author sososeen09
  */
 
-public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapterContract ,ViewBindClickContract{
+public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapterContract, ViewBindClickContract {
     private OnItemClickListener mOnItemClickListener;
     private OnItemChildClickListener mOnItemChildClickListener;
     private OffsetDelegate mOffsetDelegate;
@@ -42,41 +43,21 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
         super(items, pool);
     }
 
-    /**
-     * Register a callback to be invoked when an item in this RecyclerView has
-     * been clicked.
-     *
-     * @param listener The callback that will be invoked.
-     */
     @Override
     public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
         mOnItemClickListener = listener;
     }
 
-    /**
-     * @return The callback to be invoked with an item in this RecyclerView has
-     * been clicked and held, or null id no callback as been set.
-     */
     @Override
     public final OnItemClickListener getOnItemClickListener() {
         return mOnItemClickListener;
     }
 
-    /**
-     * Register a callback to be invoked when an itemchild in View has
-     * been  clicked
-     *
-     * @param listener The callback that will run
-     */
     @Override
     public void setOnItemChildClickListener(OnItemChildClickListener listener) {
         mOnItemChildClickListener = listener;
     }
 
-    /**
-     * @return The callback to be invoked with an itemchild in this RecyclerView has
-     * been clicked, or null id no callback has been set.
-     */
     @Nullable
     @Override
     public final OnItemChildClickListener getOnItemChildClickListener() {
