@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sososeen09.multitype.adapter.ItemDatas;
 import com.sososeen09.multitype.adapter.wrapper.HeaderFooterWrapperAdapter;
 import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
 import com.sososeen09.multitype.adapter.base.BaseMultiAdapter;
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import me.drakeet.multitype.Items;
 
 public class OnClickListenerActivity extends AppCompatActivity implements View.OnClickListener {
     RecyclerView rv;
@@ -68,7 +68,7 @@ public class OnClickListenerActivity extends AppCompatActivity implements View.O
         });
 
 
-        Items items = new Items();
+        ItemDatas items = new ItemDatas();
 
         List<String> strings = new ArrayList<>();
         Random random = new Random();
@@ -80,7 +80,7 @@ public class OnClickListenerActivity extends AppCompatActivity implements View.O
             }
         }
 
-        baseMultiAdapter.setItems(items);
+        baseMultiAdapter.setData(items);
         baseMultiAdapter.setOffsetDelegate(new OffsetDelegate() {
             @Override
             public int getOffsetPosition() {
@@ -90,7 +90,7 @@ public class OnClickListenerActivity extends AppCompatActivity implements View.O
         baseMultiAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(OnClickAdapterContract adapter, View view, int position) {
-                Object o = baseMultiAdapter.getItems().get(position);
+                Object o = baseMultiAdapter.getData().get(position);
                 Toast.makeText(OnClickListenerActivity.this, "this id " + o.getClass().getSimpleName() + " Type" + "--: " + position, Toast.LENGTH_SHORT).show();
             }
         });

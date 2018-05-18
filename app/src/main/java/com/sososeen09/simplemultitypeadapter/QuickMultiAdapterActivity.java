@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sososeen09.multitype.adapter.ItemDatas;
 import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
 import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
 import com.sososeen09.multitype.adapter.base.BaseQuickWrapperAdapter;
@@ -17,8 +18,6 @@ import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 
 import java.util.Random;
-
-import me.drakeet.multitype.Items;
 
 public class QuickMultiAdapterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -49,7 +48,6 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
 
         mBaseQuickWrapperAdapter = BaseQuickWrapperAdapter.newInstance();
 
-
         mBaseQuickWrapperAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
             public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
@@ -74,7 +72,7 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
         });
 
 
-        Items items = new Items();
+        ItemDatas items = new ItemDatas();
 
         Random random = new Random();
         for (int i = 0; i < 50; i++) {

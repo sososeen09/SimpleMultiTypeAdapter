@@ -98,4 +98,12 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
     public void setOffsetDelegate(OffsetDelegate offsetDelegate) {
         this.mOffsetDelegate = offsetDelegate;
     }
+
+    public void setData(List<?> items) {
+        setItems(items);
+    }
+
+    public List<?> getData() {
+        return getItems();
+    }
 }

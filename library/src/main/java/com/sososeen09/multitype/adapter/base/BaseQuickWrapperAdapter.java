@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
+import com.sososeen09.multitype.adapter.AbstractItemViewBinder;
 import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
@@ -14,7 +15,6 @@ import com.sososeen09.multitype.adapter.wrapper.HeaderFooterWrapperAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.drakeet.multitype.ItemViewBinder;
 import me.drakeet.multitype.OneToManyFlow;
 
 /**
@@ -82,7 +82,7 @@ public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implemen
      * @param binder the item view binder
      * @param <T>    the item data type
      */
-    public <T> void register(@NonNull Class<? extends T> clazz, @NonNull ItemViewBinder<T, ?> binder) {
+    public <T> void register(@NonNull Class<? extends T> clazz, @NonNull AbstractItemViewBinder<T, ?> binder) {
         mBaseMultiAdapter.register(clazz, binder);
     }
 
@@ -100,7 +100,7 @@ public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implemen
      * @param clazz the class of a item
      * @param <T>   the item data type
      * @return {@link OneToManyFlow} for setting the binders
-     * @see #register(Class, ItemViewBinder)
+     * @see #register(Class, AbstractItemViewBinder)
      */
     @CheckResult
     public @NonNull
