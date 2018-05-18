@@ -20,6 +20,8 @@
         <activity android:name=".WrapperAdapterActivity"/>
         <activity android:name=".OnClickListenerActivity">
         </activity>
+        <activity android:name=".QuickMultiAdapterActivity">
+        </activity>
     </application>
 
 </manifest>

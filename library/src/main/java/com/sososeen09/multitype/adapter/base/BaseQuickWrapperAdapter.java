@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
+import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import me.drakeet.multitype.ItemViewBinder;
 import me.drakeet.multitype.OneToManyFlow;
@@ -27,13 +29,21 @@ public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implemen
         return new BaseQuickWrapperAdapter(baseMultiAdapter);
     }
 
+
     private BaseMultiAdapter mBaseMultiAdapter;
 
     private BaseQuickWrapperAdapter(BaseMultiAdapter baseMultiAdapter) {
         super(baseMultiAdapter);
         this.mBaseMultiAdapter = baseMultiAdapter;
-    }
 
+        OffsetDelegate offsetDelegate=new OffsetDelegate() {
+            @Override
+            public int getOffsetPosition() {
+                return getHeaderLayoutCount();
+            }
+        };
+        mBaseMultiAdapter.setOffsetDelegate(offsetDelegate);
+    }
 
     @Override
     public void setOnItemClickListener(@Nullable OnItemClickListener listener) {
@@ -59,7 +69,7 @@ public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implemen
 
     @Override
     public void bindViewClickListener(final RecyclerView.ViewHolder baseViewHolder) {
-        mBaseMultiAdapter.bindViewClickListener(baseViewHolder, baseViewHolder.getLayoutPosition() - getHeaderLayoutCount());
+        mBaseMultiAdapter.bindViewClickListener(baseViewHolder);
     }
 
     /**
@@ -100,5 +110,14 @@ public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implemen
     public @NonNull
     <T> OneToManyFlow<T> register(@NonNull Class<? extends T> clazz) {
         return mBaseMultiAdapter.register(clazz);
+    }
+
+    public void setNewData(List<?> items) {
+        mBaseMultiAdapter.setItems(items);
+        mBaseMultiAdapter.notifyDataSetChanged();
+    }
+
+    public List<?> getItems() {
+        return mBaseMultiAdapter.getItems();
     }
 }

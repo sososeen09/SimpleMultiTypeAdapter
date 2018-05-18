@@ -6,8 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -37,7 +35,6 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
         View view = inflater.inflate(layoutId, parent, false);
         baseMultiViewHolder = onCreateDefViewHolder(view);
         onViewHolderCreated(baseMultiViewHolder);
-        bindViewClickListener(baseMultiViewHolder);
         return baseMultiViewHolder;
     }
 
@@ -49,7 +46,7 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
      * @param baseMultiViewHolder The ViewHolder returned by {@link #onCreateViewHolder(LayoutInflater, ViewGroup)}.
      */
     protected void onViewHolderCreated(@NonNull VH baseMultiViewHolder) {
-
+        bindViewClickListener(baseMultiViewHolder);
     }
 
 
@@ -144,9 +141,9 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
 
     private void bindViewClickListener(BaseMultiViewHolder baseMultiViewHolder) {
         MultiTypeAdapter adapter = getAdapter();
-        if (adapter instanceof OnClickAdapterContract) {
-            ((OnClickAdapterContract) adapter).bindViewClickListener(baseMultiViewHolder);
-            baseMultiViewHolder.setAdapter(((OnClickAdapterContract) adapter));
+        if (adapter instanceof BaseMultiAdapter) {
+            ((BaseMultiAdapter) adapter).bindViewClickListener(baseMultiViewHolder);
+            baseMultiViewHolder.setAdapter(((BaseMultiAdapter) adapter));
         }
     }
 }

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
@@ -21,6 +22,7 @@ import me.drakeet.multitype.TypePool;
 public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapterContract {
     private OnItemClickListener mOnItemClickListener;
     private OnItemChildClickListener mOnItemChildClickListener;
+    private OffsetDelegate mOffsetDelegate;
 
     public BaseMultiAdapter() {
     }
@@ -79,8 +81,22 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
     }
 
     @Override
-    public void bindViewClickListener(RecyclerView.ViewHolder viewHolder) {
-
+    public void bindViewClickListener(final RecyclerView.ViewHolder baseViewHolder) {
+        if (baseViewHolder == null) {
+            return;
+        }
+        final View view = baseViewHolder.itemView;
+        if (view == null) {
+            return;
+        }
+        if (getOnItemClickListener() != null) {
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setOnItemClick(v, baseViewHolder.getLayoutPosition() - (mOffsetDelegate == null ? 0 : mOffsetDelegate.getOffsetPosition()));
+                }
+            });
+        }
     }
 
     /**
@@ -93,23 +109,8 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
         getOnItemClickListener().onItemClick(BaseMultiAdapter.this, v, position);
     }
 
-    public void bindViewClickListener(final RecyclerView.ViewHolder baseViewHolder, final int position) {
-        if (baseViewHolder == null) {
-            return;
-        }
-        final View view = baseViewHolder.itemView;
-        if (view == null) {
-            return;
-        }
-        if (getOnItemClickListener() != null) {
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setOnItemClick(v, position);
-                }
-            });
-        }
+
+    public void setOffsetDelegate(OffsetDelegate offsetDelegate) {
+        this.mOffsetDelegate = offsetDelegate;
     }
-
-
 }

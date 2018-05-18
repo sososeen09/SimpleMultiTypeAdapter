@@ -24,4 +24,8 @@ public class MainActivity extends AppCompatActivity {
     public void onClickTest(View view) {
         startActivity(new Intent(this, OnClickListenerActivity.class));
     }
+
+    public void quickMultiAdapter(View view) {
+        startActivity(new Intent(this, QuickMultiAdapterActivity.class));
+    }
 }

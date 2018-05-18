@@ -32,4 +32,11 @@
         android:onClick="onClickTest"
         android:text="on click test"
         android:textAllCaps="false"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="quickMultiAdapter"
+        android:text="quick multi Adapter"
+        android:textAllCaps="false"/>
 </LinearLayout>
