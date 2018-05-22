@@ -15,7 +15,11 @@ import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
 import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
 import com.sososeen09.multitype.adapter.base.QuickMultiTypeAdapter;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
+import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
+import com.sososeen09.simplemultitypeadapter.bean.Address;
+import com.sososeen09.simplemultitypeadapter.bean.UserInfo;
+import com.sososeen09.simplemultitypeadapter.binder.AddressBinder;
 import com.sososeen09.simplemultitypeadapter.binder.FemaleBinder;
 import com.sososeen09.simplemultitypeadapter.binder.MaleBinder;
 
@@ -23,6 +27,7 @@ import java.util.Random;
 
 import me.drakeet.multitype.ClassLinker;
 import me.drakeet.multitype.ItemViewBinder;
+
 /**
  * @author sososeen09
  */
@@ -65,6 +70,9 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
             }
         });
 
+        // one to one
+        mQuickMultiTypeAdapter.register(Address.class, new AddressBinder());
+
 
         // one to many
         mQuickMultiTypeAdapter.register(UserInfo.class).to(new FemaleBinder(), new MaleBinder()).withClassLinker(new ClassLinker<UserInfo>() {
@@ -81,6 +89,15 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
             public void onItemClick(OnClickAdapterContract adapter, View view, int position) {
                 Object o = mQuickMultiTypeAdapter.getItems().get(position);
                 Toast.makeText(QuickMultiAdapterActivity.this, "this is " + o.getClass().getSimpleName() + " Type" + "--: " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // set item child click listener
+        mQuickMultiTypeAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(OnClickAdapterContract adapter, View view, int position) {
+                Object o = mQuickMultiTypeAdapter.getItems().get(position);
+                Toast.makeText(QuickMultiAdapterActivity.this, "child view click " + view.getClass().getSimpleName() + " Type" + "--: " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -112,6 +129,9 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
             } else if (random.nextInt(10) % 4 == 0) {
                 UserInfo userInfo = new UserInfo("HanMeiMei" + i, 0);
                 items.add(userInfo);
+            } else if (random.nextInt(10) % 5 == 0) {
+                Address address = new Address("NanJing Road " + i, "ShangHai " + i, "China " + i);
+                items.add(address);
             } else {
                 items.add(i);
             }

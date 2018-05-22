@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
 import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
 import com.sososeen09.simplemultitypeadapter.R;
-import com.sososeen09.simplemultitypeadapter.UserInfo;
+import com.sososeen09.simplemultitypeadapter.bean.UserInfo;
 
 /**
  * @author sososeen09

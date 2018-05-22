@@ -1,4 +1,4 @@
-package com.sososeen09.simplemultitypeadapter;
+package com.sososeen09.simplemultitypeadapter.bean;
 
 /**
  * @author sososeen09

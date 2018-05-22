@@ -1,5 +1,6 @@
 package com.sososeen09.multitype.adapter.base;
 
+import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -59,6 +60,7 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
      *
      * @param baseMultiViewHolder The ViewHolder returned by {@link #onCreateViewHolder(LayoutInflater, ViewGroup)}.
      */
+    @CallSuper
     protected void onViewHolderCreated(@NonNull VH baseMultiViewHolder) {
         bindViewClickListener(baseMultiViewHolder);
     }
