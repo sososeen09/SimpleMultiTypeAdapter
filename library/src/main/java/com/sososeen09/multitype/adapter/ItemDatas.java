@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Created on 2018/5/18.
  * simple Collection class
+ *
  * @author sososeen09
  */
-
 public class ItemDatas extends ArrayList<Object> {
 
     /**
@@ -23,9 +22,9 @@ public class ItemDatas extends ArrayList<Object> {
     /**
      * Constructs an empty list with the specified initial capacity.
      *
-     * @param  initialCapacity  the initial capacity of the list
+     * @param initialCapacity the initial capacity of the list
      * @throws IllegalArgumentException if the specified initial capacity
-     *         is negative
+     *                                  is negative
      */
     public ItemDatas(int initialCapacity) {
         super(initialCapacity);

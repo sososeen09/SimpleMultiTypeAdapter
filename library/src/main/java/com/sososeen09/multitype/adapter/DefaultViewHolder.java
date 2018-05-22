@@ -7,11 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created on 2018/5/18.
- *
  * @author sososeen09
  */
-
 public class DefaultViewHolder extends RecyclerView.ViewHolder {
     private View mConvertView;
     private Context mContext;

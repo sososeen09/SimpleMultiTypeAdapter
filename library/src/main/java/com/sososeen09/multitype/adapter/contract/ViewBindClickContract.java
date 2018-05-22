@@ -3,11 +3,8 @@ package com.sososeen09.multitype.adapter.contract;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * Created on 2018/5/18.
- *
  * @author sososeen09
  */
-
 public interface ViewBindClickContract {
     /**
      * ViewHolder's itemView may set OnClickListener,the implemention of OnClickAdapterContract should handle it

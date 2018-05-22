@@ -30,6 +30,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
+ * The BaseMultiViewHolder is for simple use RecyclerView.ViewHolder,
+ * the develop not have to create a {@link android.support.v7.widget.RecyclerView.ViewHolder} object;
+ * thanks https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  * @author sososeen09
  */
 public class BaseMultiViewHolder extends RecyclerView.ViewHolder {

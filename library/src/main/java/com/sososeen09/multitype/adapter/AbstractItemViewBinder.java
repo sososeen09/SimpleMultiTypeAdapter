@@ -8,11 +8,8 @@ import android.view.ViewGroup;
 import me.drakeet.multitype.ItemViewBinder;
 
 /**
- * Created on 2018/5/18.
- *
  * @author sososeen09
  */
-
 public abstract class AbstractItemViewBinder<T, VH extends RecyclerView.ViewHolder> extends ItemViewBinder<T, VH> {
 
     /**
@@ -35,6 +32,7 @@ public abstract class AbstractItemViewBinder<T, VH extends RecyclerView.ViewHold
      * position.
      * the{@link ItemViewBinder#onBindViewHolder(RecyclerView.ViewHolder, Object)}  modifier is protected, but sometimes
      * the method need to called in {@link com.sososeen09.multitype.adapter.base.BaseMultiAdapter}
+     *
      * @see RecyclerView.Adapter#onBindViewHolder(RecyclerView.ViewHolder, int)
      */
     @Override

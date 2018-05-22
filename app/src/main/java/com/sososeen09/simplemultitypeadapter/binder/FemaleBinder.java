@@ -8,8 +8,6 @@ import com.sososeen09.simplemultitypeadapter.R;
 import com.sososeen09.simplemultitypeadapter.UserInfo;
 
 /**
- * Created on 2018/5/22.
- *
  * @author sososeen09
  */
 

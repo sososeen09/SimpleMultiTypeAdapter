@@ -12,11 +12,8 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
- * Created on 2018/5/18.
- *
  * @author sososeen09
  */
-
 public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final RecyclerView.Adapter mWrapperd;
     public static final int HEADER_VIEW = 0x00002222;

@@ -7,6 +7,7 @@ import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 /**
  * Interface definition for a callback to be invoked when an item in this
  * RecyclerView itemView has been clicked.
+ * @author sososeen09
  */
 public interface OnItemClickListener {
 

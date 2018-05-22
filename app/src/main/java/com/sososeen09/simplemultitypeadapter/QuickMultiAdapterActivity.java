@@ -23,7 +23,9 @@ import java.util.Random;
 
 import me.drakeet.multitype.ClassLinker;
 import me.drakeet.multitype.ItemViewBinder;
-
+/**
+ * @author sososeen09
+ */
 public class QuickMultiAdapterActivity extends AppCompatActivity implements View.OnClickListener {
 
     RecyclerView rv;

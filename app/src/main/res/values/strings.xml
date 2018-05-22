@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SimpleMultiTypeAdapter</string>
+    <string name="intro">simple use for multi type Item with RecyclerView.Adapter，support header, footer, ItemClickListener, ItemChildClickListener</string>
 </resources>

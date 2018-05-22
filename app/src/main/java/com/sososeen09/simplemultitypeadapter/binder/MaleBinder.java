@@ -8,12 +8,10 @@ import com.sososeen09.simplemultitypeadapter.R;
 import com.sososeen09.simplemultitypeadapter.UserInfo;
 
 /**
- * Created on 2018/5/22.
- *
  * @author sososeen09
  */
 
-public class MaleBinder extends BaseItemViewBinder<UserInfo,BaseMultiViewHolder> {
+public class MaleBinder extends BaseItemViewBinder<UserInfo, BaseMultiViewHolder> {
 
     public MaleBinder() {
         super(R.layout.item_male);

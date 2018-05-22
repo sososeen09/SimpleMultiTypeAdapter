@@ -17,12 +17,11 @@ import me.drakeet.multitype.MultiTypeAdapter;
 import me.drakeet.multitype.TypePool;
 
 /**
- * the BaseMultiAdapter is used to enhance the ability for
+ * the BaseMultiAdapter is used to enhance the ability for{@link MultiTypeAdapter}
  * add {@link OnItemClickListener} and {@link OnItemChildClickListener}
  *
  * @author sososeen09
  */
-
 public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapterContract, ViewBindClickContract {
     private OnItemClickListener mOnItemClickListener;
     private OnItemChildClickListener mOnItemChildClickListener;

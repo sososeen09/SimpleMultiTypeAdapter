@@ -20,8 +20,6 @@ import java.util.List;
 import me.drakeet.multitype.OneToManyFlow;
 
 /**
- * Created on 2018/5/18.
- *
  * @author sososeen09
  */
 
@@ -197,7 +195,7 @@ public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implemen
     @SuppressWarnings("unchecked")
     public void replaceData(@NonNull Collection<?> data) {
         // 不是同一个引用才清空列表
-        List<Object> items = (List<Object>)getItems();
+        List<Object> items = (List<Object>) getItems();
         if (data != items) {
             items.clear();
             items.addAll(data);

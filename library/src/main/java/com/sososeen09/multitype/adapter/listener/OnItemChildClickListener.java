@@ -7,6 +7,8 @@ import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 /**
  * Interface definition for a callback to be invoked when an itemchild in this
  * view has been clicked
+ *
+ * @author sososeen09
  */
 public interface OnItemChildClickListener {
     /**
