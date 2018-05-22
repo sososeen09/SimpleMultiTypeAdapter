@@ -95,5 +95,5 @@ rv.setAdapter(mBaseQuickWrapperAdapter);
 see the [sample](https://github.com/sososeen09/SimpleMultiTypeAdapter) for more info
 ### Thanks
 - [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
-- [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+- [MultiType](https://github.com/drakeet/MultiType)
 - [HeaderViewListAdapter](http://androidxref.com/7.1.2_r36/xref/frameworks/base/core/java/android/widget/HeaderViewListAdapter.java)
