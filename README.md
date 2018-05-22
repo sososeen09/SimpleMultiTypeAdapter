@@ -36,7 +36,6 @@ BaseQuickWrapperAdapter baseQuickWrapperAdapter = BaseQuickWrapperAdapter.newIns
 2. register class with ItemViewBinder
 
 ```
-
 // one to one
 baseQuickWrapperAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
     @Override
@@ -62,8 +61,6 @@ baseQuickWrapperAdapter.register(UserInfo.class).to(new FemaleBinder(), new Male
         return userInfo.sexuality == 1 ? MaleBinder.class : FemaleBinder.class;
     }
 });
-
-
 ```
 
 3. set item click listener
@@ -76,14 +73,12 @@ baseQuickWrapperAdapter.setOnItemClickListener(new OnItemClickListener() {
         Toast.makeText(QuickMultiAdapterActivity.this, "this is " + o.getClass().getSimpleName() + " Type" + "--: " + position, Toast.LENGTH_SHORT).show();
     }
 });
-
 ```
 
 4. set new Data or addData
 
 ```
 baseQuickWrapperAdapter.setNewData(items);
-
 ```
 
 5. bind RecyclerView
