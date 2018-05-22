@@ -16,8 +16,13 @@ import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
 import com.sososeen09.multitype.adapter.base.BaseQuickWrapperAdapter;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
+import com.sososeen09.simplemultitypeadapter.binder.FemaleBinder;
+import com.sososeen09.simplemultitypeadapter.binder.MaleBinder;
 
 import java.util.Random;
+
+import me.drakeet.multitype.ClassLinker;
+import me.drakeet.multitype.ItemViewBinder;
 
 public class QuickMultiAdapterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,6 +31,8 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
     TextView tvRemoveHeader;
     TextView tvAddFooter;
     TextView tvRemoveFooter;
+    TextView tvNewData;
+    TextView tvAddData;
     private BaseQuickWrapperAdapter mBaseQuickWrapperAdapter;
 
     @Override
@@ -33,21 +40,14 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_multi_adapter);
 
-        tvAddHeader = findViewById(R.id.tv_add_header);
-        tvRemoveHeader = findViewById(R.id.tv_remove_header);
-        tvAddFooter = findViewById(R.id.tv_add_footer);
-        tvRemoveFooter = findViewById(R.id.tv_remove_footer);
-
-        tvAddHeader.setOnClickListener(this);
-        tvRemoveHeader.setOnClickListener(this);
-        tvAddFooter.setOnClickListener(this);
-        tvRemoveFooter.setOnClickListener(this);
+        initView();
 
         rv = findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
         mBaseQuickWrapperAdapter = BaseQuickWrapperAdapter.newInstance();
 
+        // one to one
         mBaseQuickWrapperAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
             public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
@@ -55,6 +55,7 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
             }
         });
 
+        // one to one
         mBaseQuickWrapperAdapter.register(Integer.class, new BaseItemViewBinder<Integer, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
             public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull Integer item) {
@@ -63,30 +64,73 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
         });
 
 
+        // one to many
+        mBaseQuickWrapperAdapter.register(UserInfo.class).to(new FemaleBinder(), new MaleBinder()).withClassLinker(new ClassLinker<UserInfo>() {
+            @NonNull
+            @Override
+            public Class<? extends ItemViewBinder<UserInfo, ?>> index(int position, @NonNull UserInfo userInfo) {
+                return userInfo.sexuality == 1 ? MaleBinder.class : FemaleBinder.class;
+            }
+        });
+
+        // set item click listener
         mBaseQuickWrapperAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(OnClickAdapterContract adapter, View view, int position) {
                 Object o = mBaseQuickWrapperAdapter.getItems().get(position);
-                Toast.makeText(QuickMultiAdapterActivity.this, "this id " + o.getClass().getSimpleName() + " Type" + "--: " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuickMultiAdapterActivity.this, "this is " + o.getClass().getSimpleName() + " Type" + "--: " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
 
-        ItemDatas items = new ItemDatas();
-
-        Random random = new Random();
-        for (int i = 0; i < 50; i++) {
-            if (random.nextInt(10) % 2 == 0) {
-                items.add("this is String, value: " + i);
-            } else {
-                items.add(i);
-            }
-        }
+        ItemDatas items = getNewData(50);
 
         mBaseQuickWrapperAdapter.setNewData(items);
 
         rv.setAdapter(mBaseQuickWrapperAdapter);
 
+    }
+
+    @NonNull
+    private ItemDatas getNewData(int num) {
+        return getNewData(0, num);
+    }
+
+    @NonNull
+    private ItemDatas getNewData(int from, int num) {
+        ItemDatas items = new ItemDatas();
+
+        Random random = new Random();
+        for (int i = from; i < from + num; i++) {
+            if (random.nextInt(10) % 2 == 0) {
+                items.add("this is String, value: " + i);
+            } else if (random.nextInt(10) % 3 == 0) {
+                UserInfo userInfo = new UserInfo("LiLei" + i, 1);
+                items.add(userInfo);
+            } else if (random.nextInt(10) % 4 == 0) {
+                UserInfo userInfo = new UserInfo("HanMeiMei" + i, 0);
+                items.add(userInfo);
+            } else {
+                items.add(i);
+            }
+        }
+        return items;
+    }
+
+    private void initView() {
+        tvAddHeader = findViewById(R.id.tv_add_header);
+        tvRemoveHeader = findViewById(R.id.tv_remove_header);
+        tvAddFooter = findViewById(R.id.tv_add_footer);
+        tvRemoveFooter = findViewById(R.id.tv_remove_footer);
+        tvNewData = findViewById(R.id.tv_new_date);
+        tvAddData = findViewById(R.id.tv_add_data);
+
+        tvAddHeader.setOnClickListener(this);
+        tvRemoveHeader.setOnClickListener(this);
+        tvAddFooter.setOnClickListener(this);
+        tvRemoveFooter.setOnClickListener(this);
+        tvNewData.setOnClickListener(this);
+        tvAddData.setOnClickListener(this);
     }
 
     @Override
@@ -104,6 +148,12 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
             case R.id.tv_remove_footer:
                 mBaseQuickWrapperAdapter.removeAllFooterView();
                 break;
+            case R.id.tv_new_date:
+                mBaseQuickWrapperAdapter.setNewData(getNewData(20));
+                break;
+            case R.id.tv_add_data:
+                mBaseQuickWrapperAdapter.addData(getNewData(mBaseQuickWrapperAdapter.getItems().size(), 20));
+                break;
 
             default:
                 break;
@@ -113,14 +163,12 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
     public View getHeader() {
         TextView header = new TextView(this);
         header.setText("this is header");
-
         return header;
     }
 
     public View getFooter() {
         TextView header = new TextView(this);
         header.setText("this is footer");
-
         return header;
     }
 

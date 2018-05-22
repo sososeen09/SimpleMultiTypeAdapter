@@ -90,12 +90,14 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
      * @param position
      */
     protected void setOnItemClick(View v, int position) {
-        getOnItemClickListener().onItemClick(BaseMultiAdapter.this, v, position);
+        if (getOnItemClickListener() != null) {
+            getOnItemClickListener().onItemClick(BaseMultiAdapter.this, v, position);
+        }
     }
 
 
     @Override
-    public void setOffsetDelegate(OffsetDelegate offsetDelegate) {
+    public void setOffsetDelegate(@NonNull OffsetDelegate offsetDelegate) {
         this.mOffsetDelegate = offsetDelegate;
     }
 

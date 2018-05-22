@@ -1,6 +1,7 @@
 package com.sososeen09.multitype.adapter.base;
 
 import android.support.annotation.CheckResult;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,7 @@ import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 import com.sososeen09.multitype.adapter.wrapper.HeaderFooterWrapperAdapter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import me.drakeet.multitype.OneToManyFlow;
@@ -110,7 +112,97 @@ public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implemen
 
     public void setNewData(List<?> items) {
         mBaseMultiAdapter.setItems(items);
-        mBaseMultiAdapter.notifyDataSetChanged();
+
+        notifyDataSetChanged();
+    }
+
+
+    /**
+     * add one new data in to certain location
+     *
+     * @param position
+     */
+    @SuppressWarnings("unchecked")
+    public void addData(@IntRange(from = 0) int position, @NonNull Object data) {
+        List<Object> items = (List<Object>) getItems();
+        items.add(data);
+        notifyItemInserted(position + getHeaderLayoutCount());
+    }
+
+    /**
+     * add one new data
+     */
+    @SuppressWarnings("unchecked")
+    public void addData(@NonNull Object data) {
+        List<Object> items = (List<Object>) getItems();
+        items.add(data);
+        notifyItemInserted(items.size() + getHeaderLayoutCount());
+    }
+
+    /**
+     * remove the item associated with the specified position of adapter
+     *
+     * @param position
+     */
+    @SuppressWarnings("unchecked")
+    public void remove(@IntRange(from = 0) int position) {
+        List<Object> items = (List<Object>) getItems();
+        items.remove(position);
+        int internalPosition = position + getHeaderLayoutCount();
+        notifyItemRemoved(internalPosition);
+        notifyItemRangeChanged(internalPosition, items.size() - internalPosition);
+    }
+
+    /**
+     * change data
+     */
+    @SuppressWarnings("unchecked")
+    public void setData(@IntRange(from = 0) int index, @NonNull Object data) {
+        List<Object> items = (List<Object>) getItems();
+        items.set(index, data);
+        notifyItemChanged(index + getHeaderLayoutCount());
+    }
+
+    /**
+     * add new data in to certain location
+     *
+     * @param position the insert position
+     * @param newData  the new data collection
+     */
+    @SuppressWarnings("unchecked")
+    public void addData(@IntRange(from = 0) int position, @NonNull Collection<?> newData) {
+        List<Object> items = (List<Object>) getItems();
+        items.addAll(position, newData);
+        notifyItemRangeInserted(position + getHeaderLayoutCount(), newData.size());
+    }
+
+    /**
+     * add new data to the end of mData
+     *
+     * @param newData the new data collection
+     */
+    @SuppressWarnings("unchecked")
+    public void addData(@NonNull Collection<?> newData) {
+        List<Object> items = (List<Object>) getItems();
+        items.addAll(newData);
+        notifyItemRangeInserted(items.size() - newData.size() + getHeaderLayoutCount(), newData.size());
+    }
+
+    /**
+     * use data to replace all item in mData. this method is different {@link #setNewData(List)},
+     * it doesn't change the mData reference
+     *
+     * @param data data collection
+     */
+    @SuppressWarnings("unchecked")
+    public void replaceData(@NonNull Collection<?> data) {
+        // 不是同一个引用才清空列表
+        List<Object> items = (List<Object>)getItems();
+        if (data != items) {
+            items.clear();
+            items.addAll(data);
+        }
+        notifyDataSetChanged();
     }
 
     public List<?> getItems() {

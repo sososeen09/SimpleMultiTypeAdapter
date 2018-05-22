@@ -1,9 +1,9 @@
 package com.sososeen09.simplemultitypeadapter;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -11,16 +11,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sososeen09.multitype.adapter.ItemDatas;
-import com.sososeen09.multitype.adapter.wrapper.HeaderFooterWrapperAdapter;
 import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
 import com.sososeen09.multitype.adapter.base.BaseMultiAdapter;
 import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
 import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
+import com.sososeen09.multitype.adapter.wrapper.HeaderFooterWrapperAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 
@@ -69,8 +68,6 @@ public class OnClickListenerActivity extends AppCompatActivity implements View.O
 
 
         ItemDatas items = new ItemDatas();
-
-        List<String> strings = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < 50; i++) {
             if (random.nextInt(10) % 2 == 0) {
@@ -91,7 +88,7 @@ public class OnClickListenerActivity extends AppCompatActivity implements View.O
             @Override
             public void onItemClick(OnClickAdapterContract adapter, View view, int position) {
                 Object o = baseMultiAdapter.getData().get(position);
-                Toast.makeText(OnClickListenerActivity.this, "this id " + o.getClass().getSimpleName() + " Type" + "--: " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(OnClickListenerActivity.this, "this is " + o.getClass().getSimpleName() + " Type" + "--: " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
