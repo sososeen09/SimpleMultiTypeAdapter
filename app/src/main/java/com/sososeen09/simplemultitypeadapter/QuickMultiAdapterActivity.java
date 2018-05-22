@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.sososeen09.multitype.adapter.ItemDatas;
 import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
 import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
-import com.sososeen09.multitype.adapter.base.BaseQuickWrapperAdapter;
+import com.sososeen09.multitype.adapter.base.QuickMultiTypeAdapter;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 import com.sososeen09.simplemultitypeadapter.binder.FemaleBinder;
@@ -35,7 +35,7 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
     TextView tvRemoveFooter;
     TextView tvNewData;
     TextView tvAddData;
-    private BaseQuickWrapperAdapter mBaseQuickWrapperAdapter;
+    private QuickMultiTypeAdapter mQuickMultiTypeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +47,10 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
         rv = findViewById(R.id.rv);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
-        mBaseQuickWrapperAdapter = BaseQuickWrapperAdapter.newInstance();
+        mQuickMultiTypeAdapter = QuickMultiTypeAdapter.newInstance();
 
         // one to one
-        mBaseQuickWrapperAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
+        mQuickMultiTypeAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
             public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
                 holder.setText(R.id.tv, item);
@@ -58,7 +58,7 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
         });
 
         // one to one
-        mBaseQuickWrapperAdapter.register(Integer.class, new BaseItemViewBinder<Integer, BaseMultiViewHolder>(R.layout.item_multi) {
+        mQuickMultiTypeAdapter.register(Integer.class, new BaseItemViewBinder<Integer, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
             public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull Integer item) {
                 holder.setText(R.id.tv, "this is integer item: " + item).setBackgroundColor(R.id.tv, Color.BLUE);
@@ -67,7 +67,7 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
 
 
         // one to many
-        mBaseQuickWrapperAdapter.register(UserInfo.class).to(new FemaleBinder(), new MaleBinder()).withClassLinker(new ClassLinker<UserInfo>() {
+        mQuickMultiTypeAdapter.register(UserInfo.class).to(new FemaleBinder(), new MaleBinder()).withClassLinker(new ClassLinker<UserInfo>() {
             @NonNull
             @Override
             public Class<? extends ItemViewBinder<UserInfo, ?>> index(int position, @NonNull UserInfo userInfo) {
@@ -76,10 +76,10 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
         });
 
         // set item click listener
-        mBaseQuickWrapperAdapter.setOnItemClickListener(new OnItemClickListener() {
+        mQuickMultiTypeAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(OnClickAdapterContract adapter, View view, int position) {
-                Object o = mBaseQuickWrapperAdapter.getItems().get(position);
+                Object o = mQuickMultiTypeAdapter.getItems().get(position);
                 Toast.makeText(QuickMultiAdapterActivity.this, "this is " + o.getClass().getSimpleName() + " Type" + "--: " + position, Toast.LENGTH_SHORT).show();
             }
         });
@@ -87,9 +87,9 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
 
         ItemDatas items = getNewData(50);
 
-        mBaseQuickWrapperAdapter.setNewData(items);
+        mQuickMultiTypeAdapter.setNewData(items);
 
-        rv.setAdapter(mBaseQuickWrapperAdapter);
+        rv.setAdapter(mQuickMultiTypeAdapter);
 
     }
 
@@ -139,22 +139,22 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_add_header:
-                mBaseQuickWrapperAdapter.addHeaderView(getHeader());
+                mQuickMultiTypeAdapter.addHeaderView(getHeader());
                 break;
             case R.id.tv_remove_header:
-                mBaseQuickWrapperAdapter.removeAllHeaderView();
+                mQuickMultiTypeAdapter.removeAllHeaderView();
                 break;
             case R.id.tv_add_footer:
-                mBaseQuickWrapperAdapter.addFooterView(getFooter());
+                mQuickMultiTypeAdapter.addFooterView(getFooter());
                 break;
             case R.id.tv_remove_footer:
-                mBaseQuickWrapperAdapter.removeAllFooterView();
+                mQuickMultiTypeAdapter.removeAllFooterView();
                 break;
             case R.id.tv_new_date:
-                mBaseQuickWrapperAdapter.setNewData(getNewData(20));
+                mQuickMultiTypeAdapter.setNewData(getNewData(20));
                 break;
             case R.id.tv_add_data:
-                mBaseQuickWrapperAdapter.addData(getNewData(mBaseQuickWrapperAdapter.getItems().size(), 20));
+                mQuickMultiTypeAdapter.addData(getNewData(mQuickMultiTypeAdapter.getItems().size(), 20));
                 break;
 
             default:

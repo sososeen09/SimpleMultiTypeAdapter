@@ -30,14 +30,14 @@ dependencies {
 ### How to use
 1. Get the adapter
 ```
-BaseQuickWrapperAdapter baseQuickWrapperAdapter = BaseQuickWrapperAdapter.newInstance();
+QuickMultiTypeAdapter quickMultiTypeAdapter = QuickMultiTypeAdapter.newInstance();
 ```
 
 2. register class with ItemViewBinder
 
 ```
 // one to one
-baseQuickWrapperAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
+quickMultiTypeAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
     @Override
     public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
         holder.setText(R.id.tv, item);
@@ -45,7 +45,7 @@ baseQuickWrapperAdapter.register(String.class, new BaseItemViewBinder<String, Ba
 });
 
 // one to one
-baseQuickWrapperAdapter.register(Integer.class, new BaseItemViewBinder<Integer, BaseMultiViewHolder>(R.layout.item_multi) {
+quickMultiTypeAdapter.register(Integer.class, new BaseItemViewBinder<Integer, BaseMultiViewHolder>(R.layout.item_multi) {
     @Override
     public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull Integer item) {
         holder.setText(R.id.tv, "this is integer item: " + item).setBackgroundColor(R.id.tv, Color.BLUE);
@@ -54,7 +54,7 @@ baseQuickWrapperAdapter.register(Integer.class, new BaseItemViewBinder<Integer, 
 
 
 // one to many
-baseQuickWrapperAdapter.register(UserInfo.class).to(new FemaleBinder(), new MaleBinder()).withClassLinker(new ClassLinker<UserInfo>() {
+quickMultiTypeAdapter.register(UserInfo.class).to(new FemaleBinder(), new MaleBinder()).withClassLinker(new ClassLinker<UserInfo>() {
     @NonNull
     @Override
     public Class<? extends ItemViewBinder<UserInfo, ?>> index(int position, @NonNull UserInfo userInfo) {
@@ -66,7 +66,7 @@ baseQuickWrapperAdapter.register(UserInfo.class).to(new FemaleBinder(), new Male
 3. set item click listener
 
 ```
-baseQuickWrapperAdapter.setOnItemClickListener(new OnItemClickListener() {
+quickMultiTypeAdapter.setOnItemClickListener(new OnItemClickListener() {
     @Override
     public void onItemClick(OnClickAdapterContract adapter, View view, int position) {
         Object o = baseQuickWrapperAdapter.getItems().get(position);
@@ -78,13 +78,13 @@ baseQuickWrapperAdapter.setOnItemClickListener(new OnItemClickListener() {
 4. set new Data or addData
 
 ```
-baseQuickWrapperAdapter.setNewData(items);
+quickMultiTypeAdapter.setNewData(items);
 ```
 
 5. bind RecyclerView
 
 ```
-rv.setAdapter(mBaseQuickWrapperAdapter);
+rv.setAdapter(quickMultiTypeAdapter);
 ```
 
 see the [sample](https://github.com/sososeen09/SimpleMultiTypeAdapter) for more info

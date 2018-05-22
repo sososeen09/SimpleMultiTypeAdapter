@@ -23,17 +23,17 @@ import me.drakeet.multitype.OneToManyFlow;
  * @author sososeen09
  */
 
-public class BaseQuickWrapperAdapter extends HeaderFooterWrapperAdapter implements OnClickAdapterContract {
+public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements OnClickAdapterContract {
 
-    public static BaseQuickWrapperAdapter newInstance() {
+    public static QuickMultiTypeAdapter newInstance() {
         BaseMultiAdapter baseMultiAdapter = new BaseMultiAdapter(new ArrayList<>());
-        return new BaseQuickWrapperAdapter(baseMultiAdapter);
+        return new QuickMultiTypeAdapter(baseMultiAdapter);
     }
 
 
     private BaseMultiAdapter mBaseMultiAdapter;
 
-    private BaseQuickWrapperAdapter(BaseMultiAdapter baseMultiAdapter) {
+    private QuickMultiTypeAdapter(BaseMultiAdapter baseMultiAdapter) {
         super(baseMultiAdapter);
         this.mBaseMultiAdapter = baseMultiAdapter;
 
