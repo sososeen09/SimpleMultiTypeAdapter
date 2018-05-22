@@ -33,7 +33,7 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
 
     private BaseMultiAdapter mBaseMultiAdapter;
 
-    private QuickMultiTypeAdapter(BaseMultiAdapter baseMultiAdapter) {
+    protected QuickMultiTypeAdapter(BaseMultiAdapter baseMultiAdapter) {
         super(baseMultiAdapter);
         this.mBaseMultiAdapter = baseMultiAdapter;
 

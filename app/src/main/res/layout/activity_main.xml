@@ -7,6 +7,13 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+
+    <TextView
+        android:id="@+id/tv_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="@string/app_name"/>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,9 +21,11 @@
         android:text="quick multi Adapter"
         android:textAllCaps="false"/>
 
-    <TextView
-        android:id="@+id/tv_intro"
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="@string/app_name"/>
+        android:onClick="homePage"
+        android:text="homePage demos"
+        android:textAllCaps="false"/>
+
 </LinearLayout>

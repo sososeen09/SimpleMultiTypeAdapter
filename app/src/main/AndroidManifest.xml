@@ -18,6 +18,8 @@
         </activity>
         <activity android:name=".QuickMultiAdapterActivity">
         </activity>
+        <activity android:name=".HomePageActivity">
+        </activity>
     </application>
 
 </manifest>
