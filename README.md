@@ -1,6 +1,6 @@
 ### SimpleMultiTypeAdapter
 
-![](https://jitpack.io/v/sososeen09/SimpleMultiTypeAdapter.svg)](https://jitpack.io/#sososeen09/SimpleMultiTypeAdapter)
+[![](https://jitpack.io/v/sososeen09/SimpleMultiTypeAdapter.svg)](https://jitpack.io/#sososeen09/SimpleMultiTypeAdapter)
 
 ### Getting started
 
