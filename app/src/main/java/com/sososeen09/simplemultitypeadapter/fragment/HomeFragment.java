@@ -54,8 +54,9 @@ public class HomeFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         mQuickMultiTypeAdapter = QuickMultiTypeAdapter.newInstance();
 
+        View headerView = getHeaderView();
+        mQuickMultiTypeAdapter.addHeaderView(headerView);
 
-        mQuickMultiTypeAdapter.addHeaderView(getHeaderView());
         // one to one
         mQuickMultiTypeAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
             @Override
