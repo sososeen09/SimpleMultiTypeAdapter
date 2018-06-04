@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.sososeen09.multitype.adapter.DefaultViewHolder;
+import com.sososeen09.multitype.adapter.listener.OnRequestLoadMoreListener;
+import com.sososeen09.multitype.adapter.loadmore.LoadMoreView;
+import com.sososeen09.multitype.adapter.loadmore.SimpleLoadMoreView;
+import com.sososeen09.multitype.adapter.log.Logger;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -15,15 +19,25 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * @author sososeen09
  */
 public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private final RecyclerView.Adapter mWrapperd;
+    protected final RecyclerView.Adapter mWrapperd;
     public static final int HEADER_VIEW = 0x00002222;
+
     public static final int FOOTER_VIEW = 0x00003333;
 
+    public static final int LOADING_VIEW = 0x00444444;
     //header
     private LinearLayout mHeaderLayout;
 
     //footer
     private LinearLayout mFooterLayout;
+
+    //loadMore
+    private boolean mNextLoadEnable = false;
+    private boolean mLoadMoreEnable = false;
+    private boolean mLoading = false;
+    private LoadMoreView mLoadMoreView = new SimpleLoadMoreView();
+    private OnRequestLoadMoreListener mOnRequestLoadMoreListener;
+    private RecyclerView mRecyclerView;
 
     public HeaderFooterWrapperAdapter(RecyclerView.Adapter adapter) {
         this.mWrapperd = adapter;
@@ -33,11 +47,80 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == HEADER_VIEW) {
-            return DefaultViewHolder.createViewHolder(parent.getContext(), mHeaderLayout);
+            return DefaultViewHolder.createViewHolder(mHeaderLayout);
         } else if (viewType == FOOTER_VIEW) {
-            return DefaultViewHolder.createViewHolder(parent.getContext(), mFooterLayout);
+            return DefaultViewHolder.createViewHolder(mFooterLayout);
+        } else if (viewType == LOADING_VIEW) {
+            return getLoadingView(parent);
         }
         return mWrapperd.onCreateViewHolder(parent, viewType);
+    }
+
+    private @NonNull
+    RecyclerView.ViewHolder getLoadingView(ViewGroup parent) {
+        RecyclerView.ViewHolder viewHolder = DefaultViewHolder.createViewHolder(parent, mLoadMoreView.getLayoutId());
+        Logger.d("getLoadingView: " + "createLoadingView: " + viewHolder.itemView);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mLoadMoreView.getLoadMoreStatus() == LoadMoreView.STATUS_FAIL) {
+                    mLoadMoreView.setLoadMoreStatus(LoadMoreView.STATUS_DEFAULT);
+                    notifyItemChanged(getLoadMorePosition());
+                }
+            }
+        });
+        return viewHolder;
+    }
+
+    private int mAutoLoadMoreSize = 1;
+
+    public void setAutoLoadMoreSize(int autoLoadMoreSize) {
+        if (autoLoadMoreSize > 1) {
+            mAutoLoadMoreSize = autoLoadMoreSize;
+        }
+    }
+
+    /**
+     * 提前加载数据
+     * @param position
+     */
+    private void autoLoadMore(int position) {
+        if (getLoadMoreViewCount() == 0) {
+            return;
+        }
+        if (position < getItemCount() - mAutoLoadMoreSize) {
+            return;
+        }
+        if (mLoadMoreView.getLoadMoreStatus() != LoadMoreView.STATUS_DEFAULT) {
+            return;
+        }
+
+        mLoadMoreView.setLoadMoreStatus(LoadMoreView.STATUS_LOADING);
+        if (!mLoading) {
+            mLoading = true;
+            if (mRecyclerView != null) {
+                mRecyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mOnRequestLoadMoreListener.onLoadMoreRequested();
+                    }
+                });
+            } else {
+                mOnRequestLoadMoreListener.onLoadMoreRequested();
+            }
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.mRecyclerView = recyclerView;
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        this.mRecyclerView = null;
     }
 
     @SuppressWarnings("unchecked")
@@ -50,19 +133,40 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
                 break;
             case FOOTER_VIEW:
                 break;
+            case LOADING_VIEW:
+                mLoadMoreView.convert(holder.itemView);
+                break;
             default:
                 mWrapperd.onBindViewHolder(holder, position - getHeaderLayoutCount());
                 break;
         }
     }
 
+
     @Override
     public int getItemCount() {
-        return getHeaderLayoutCount() + mWrapperd.getItemCount() + getFooterLayoutCount();
+        return getHeaderLayoutCount() + mWrapperd.getItemCount() + getFooterLayoutCount() + getLoadMoreViewCount();
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        if (holder.getItemViewType() == LOADING_VIEW) {
+            Logger.d("onViewAttachedToWindow: " + "loadingView attach: " + holder.itemView);
+        }
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        if (holder.getItemViewType() == LOADING_VIEW) {
+            Logger.d("onViewDetachedFromWindow: " + "loadingView detach: " + holder.itemView);
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
+        autoLoadMore(position);
         int numHeaders = getHeaderLayoutCount();
         if (position < numHeaders) {
             return HEADER_VIEW;
@@ -76,11 +180,115 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
                 int numFooters = getFooterLayoutCount();
                 if (adjPosition < numFooters) {
                     return FOOTER_VIEW;
+                } else {
+                    Logger.d("getItemViewType: " + "loading view position: " + position);
+                    return LOADING_VIEW;
                 }
             }
         }
+    }
 
-        return super.getItemViewType(position);
+    /**
+     * @return Whether the Adapter is actively showing load
+     * progress.
+     */
+    public boolean isLoading() {
+        return mLoading;
+    }
+
+    /**
+     * Refresh end, no more data
+     */
+    public void loadMoreEnd() {
+        loadMoreEnd(false);
+    }
+
+    /**
+     * Refresh end, no more data
+     *
+     * @param gone if true gone the load more view
+     */
+    public void loadMoreEnd(boolean gone) {
+        if (getLoadMoreViewCount() == 0) {
+            return;
+        }
+        mLoading = false;
+        mNextLoadEnable = false;
+        mLoadMoreView.setLoadMoreEndGone(gone);
+        if (gone) {
+            notifyItemRemoved(getLoadMorePosition());
+        } else {
+            mLoadMoreView.setLoadMoreStatus(LoadMoreView.STATUS_END);
+            notifyItemChanged(getLoadMorePosition());
+        }
+    }
+
+    private int getLoadMorePosition() {
+        return getHeaderLayoutCount() + mWrapperd.getItemCount() + getFooterLayoutCount();
+    }
+
+    /**
+     * Refresh complete
+     */
+    public void loadMoreComplete() {
+        if (getLoadMoreViewCount() == 0) {
+            return;
+        }
+        mLoading = false;
+        mLoadMoreView.setLoadMoreStatus(LoadMoreView.STATUS_DEFAULT);
+        notifyItemChanged(getLoadMorePosition());
+    }
+
+    /**
+     * Refresh failed
+     */
+    public void loadMoreFail() {
+        if (getLoadMoreViewCount() == 0) {
+            return;
+        }
+        mLoading = false;
+        mLoadMoreView.setLoadMoreStatus(LoadMoreView.STATUS_FAIL);
+        notifyItemChanged(getLoadMorePosition());
+    }
+
+
+    /**
+     * Set custom load more
+     *
+     * @param loadingView
+     */
+    public void setLoadMoreView(LoadMoreView loadingView) {
+        this.mLoadMoreView = loadingView;
+    }
+
+    /**
+     * Load more view count
+     *
+     * @return 0 or 1
+     */
+    public int getLoadMoreViewCount() {
+        if (mOnRequestLoadMoreListener == null || !mLoadMoreEnable) {
+            return 0;
+        }
+        if (!mNextLoadEnable && mLoadMoreView.isLoadEndMoreGone()) {
+            return 0;
+        }
+        if (mWrapperd.getItemCount() == 0) {
+            return 0;
+        }
+        return 1;
+    }
+
+
+    public void setOnLoadMoreListener(@NonNull OnRequestLoadMoreListener onRequestLoadMoreListener) {
+        openLoadMore(onRequestLoadMoreListener);
+    }
+
+    private void openLoadMore(OnRequestLoadMoreListener onRequestLoadMoreListener) {
+        this.mOnRequestLoadMoreListener = onRequestLoadMoreListener;
+        mNextLoadEnable = true;
+        mLoadMoreEnable = true;
+        mLoading = false;
     }
 
     /**
@@ -321,4 +529,5 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
         }
         return 1;
     }
+
 }

@@ -20,14 +20,14 @@ public class DefaultViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public static RecyclerView.ViewHolder createViewHolder(Context context, View itemView) {
-        return new DefaultViewHolder(context, itemView);
+    public static RecyclerView.ViewHolder createViewHolder(View itemView) {
+        return new DefaultViewHolder(itemView.getContext(), itemView);
     }
 
-    public static RecyclerView.ViewHolder createViewHolder(Context context, ViewGroup parent, int layoutId) {
-        View itemView = LayoutInflater.from(context).inflate(layoutId, parent,
+    public static RecyclerView.ViewHolder createViewHolder(ViewGroup parent, int layoutId) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent,
                 false);
-        return new DefaultViewHolder(context, itemView);
+        return new DefaultViewHolder(parent.getContext(), itemView);
     }
 
     public View getConvertView() {

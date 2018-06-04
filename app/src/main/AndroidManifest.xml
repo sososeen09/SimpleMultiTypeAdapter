@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".HomePageActivity">
         </activity>
+        <activity android:name=".LoadMoreActivity">
+        </activity>
     </application>
 
 </manifest>

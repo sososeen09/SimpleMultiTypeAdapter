@@ -26,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, QuickMultiAdapterActivity.class));
     }
 
+    public void loadMore(View view) {
+        startActivity(new Intent(this, LoadMoreActivity.class));
+    }
+
     public void homePage(View view) {
         startActivity(new Intent(this, HomePageActivity.class));
     }
