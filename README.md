@@ -17,7 +17,7 @@ allprojects {
 Step 2 Add the dependency
 ```
 dependencies {
-    implementation 'com.github.sososeen09:SimpleMultiTypeAdapter:0.0.1'
+    implementation 'com.github.sososeen09:SimpleMultiTypeAdapter:${version}'
 }
 ```
 
