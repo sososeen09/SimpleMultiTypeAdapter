@@ -22,7 +22,9 @@ public abstract class LoadMoreView {
     /**
      * Views indexed with their IDs
      */
-    private final SparseArray<View> views = new SparseArray<>();
+    private final SparseArray<View> childViews = new SparseArray<>();
+
+    private View heldItemView;
 
     public void setLoadMoreStatus(int loadMoreStatus) {
         this.mLoadMoreStatus = loadMoreStatus;
@@ -78,14 +80,19 @@ public abstract class LoadMoreView {
 
     @SuppressWarnings("unchecked")
     private <T extends View> T getView(View itemView, @IdRes int viewId) {
-        View view = views.get(viewId);
+        // the loadMore itemView may be create more than once ,should find the current actually held itemView
+        // to get it's child view
+        if (heldItemView == null || heldItemView != itemView) {
+            childViews.clear();
+        }
+        heldItemView = itemView;
+        View view = childViews.get(viewId);
         if (view == null) {
             view = itemView.findViewById(viewId);
-            views.put(viewId, view);
+            childViews.put(viewId, view);
         }
         return (T) view;
     }
-
 
     public final void setLoadMoreEndGone(boolean loadMoreEndGone) {
         this.mLoadMoreEndGone = loadMoreEndGone;

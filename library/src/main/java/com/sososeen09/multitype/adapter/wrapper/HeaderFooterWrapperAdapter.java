@@ -10,7 +10,6 @@ import com.sososeen09.multitype.adapter.DefaultViewHolder;
 import com.sososeen09.multitype.adapter.listener.OnRequestLoadMoreListener;
 import com.sososeen09.multitype.adapter.loadmore.LoadMoreView;
 import com.sososeen09.multitype.adapter.loadmore.SimpleLoadMoreView;
-import com.sososeen09.multitype.adapter.log.Logger;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -58,8 +57,8 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private @NonNull
     RecyclerView.ViewHolder getLoadingView(ViewGroup parent) {
+        // the loadMore view may be create greater than once
         RecyclerView.ViewHolder viewHolder = DefaultViewHolder.createViewHolder(parent, mLoadMoreView.getLayoutId());
-        Logger.d("getLoadingView: " + "createLoadingView: " + viewHolder.itemView);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +81,7 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
 
     /**
      * 提前加载数据
+     *
      * @param position
      */
     private void autoLoadMore(int position) {
@@ -149,28 +149,13 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     @Override
-    public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        if (holder.getItemViewType() == LOADING_VIEW) {
-            Logger.d("onViewAttachedToWindow: " + "loadingView attach: " + holder.itemView);
-        }
-    }
-
-    @Override
-    public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-        if (holder.getItemViewType() == LOADING_VIEW) {
-            Logger.d("onViewDetachedFromWindow: " + "loadingView detach: " + holder.itemView);
-        }
-    }
-
-    @Override
     public int getItemViewType(int position) {
         autoLoadMore(position);
         int numHeaders = getHeaderLayoutCount();
         if (position < numHeaders) {
             return HEADER_VIEW;
         } else {
+            // eg. loadMorePosition=50, adapterCount=50 ,numHeaders=0,numFooters=0;
             int adjPosition = position - numHeaders;
             int adapterCount = mWrapperd.getItemCount();
             if (adjPosition < adapterCount) {
@@ -181,7 +166,6 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
                 if (adjPosition < numFooters) {
                     return FOOTER_VIEW;
                 } else {
-                    Logger.d("getItemViewType: " + "loading view position: " + position);
                     return LOADING_VIEW;
                 }
             }
@@ -223,7 +207,7 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    private int getLoadMorePosition() {
+    public int getLoadMorePosition() {
         return getHeaderLayoutCount() + mWrapperd.getItemCount() + getFooterLayoutCount();
     }
 

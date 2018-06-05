@@ -125,20 +125,18 @@ public class LoadMoreActivity extends AppCompatActivity implements View.OnClickL
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mQuickMultiTypeAdapter.loadMoreEnd(false);
-//                mQuickMultiTypeAdapter.loadMoreComplete();
-//                if (loadMoreCount < MAX_LOAD_MORE_COUNT) {
-//                    if (loadMoreCount % 2 == 1) {
-//                        mQuickMultiTypeAdapter.loadMoreFail();
-//                    } else {
-//                        mQuickMultiTypeAdapter.loadMoreComplete();
-//                        mQuickMultiTypeAdapter.addData(getNewData(mQuickMultiTypeAdapter.getItems().size(), 20));
-//                    }
-//                } else {
-//                    mQuickMultiTypeAdapter.loadMoreEnd(false);
-//                }
-//
-//                loadMoreCount++;
+                if (loadMoreCount < MAX_LOAD_MORE_COUNT) {
+                    if (loadMoreCount % 2 == 1) {
+                        mQuickMultiTypeAdapter.loadMoreFail();
+                    } else {
+                        mQuickMultiTypeAdapter.loadMoreComplete();
+                        mQuickMultiTypeAdapter.addData(getNewData(mQuickMultiTypeAdapter.getItems().size(), 20));
+                    }
+                } else {
+                    mQuickMultiTypeAdapter.loadMoreEnd(false);
+                }
+
+                loadMoreCount++;
             }
         }, 2000);
     }
