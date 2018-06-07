@@ -67,7 +67,7 @@ public class BaseMultiViewHolder extends RecyclerView.ViewHolder implements View
         this.nestViews = new HashSet<>();
     }
 
-    private int getClickPosition() {
+    public int getClickPosition() {
         return getLayoutPosition() - (mOffsetDelegate == null ? 0 : mOffsetDelegate.getOffsetPosition());
     }
 
