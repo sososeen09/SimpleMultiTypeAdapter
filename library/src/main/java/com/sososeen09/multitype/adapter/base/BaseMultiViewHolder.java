@@ -23,7 +23,9 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
+import com.sososeen09.multitype.adapter.contract.ViewHolderContract;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -35,7 +37,7 @@ import java.util.Set;
  * thanks https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  * @author sososeen09
  */
-public class BaseMultiViewHolder extends RecyclerView.ViewHolder {
+public class BaseMultiViewHolder extends RecyclerView.ViewHolder implements ViewHolderContract{
     /**
      * Views indexed with their IDs
      */
@@ -51,7 +53,7 @@ public class BaseMultiViewHolder extends RecyclerView.ViewHolder {
 
     private OnClickAdapterContract adapter;
 
-
+    private OffsetDelegate mOffsetDelegate;
     /**
      * Package private field to retain the associated user object and detect a change
      */
@@ -66,7 +68,7 @@ public class BaseMultiViewHolder extends RecyclerView.ViewHolder {
     }
 
     private int getClickPosition() {
-        return getLayoutPosition();
+        return getLayoutPosition() - (mOffsetDelegate == null ? 0 : mOffsetDelegate.getOffsetPosition());
     }
 
     public HashSet<Integer> getChildClickViewIds() {
@@ -500,5 +502,15 @@ public class BaseMultiViewHolder extends RecyclerView.ViewHolder {
      */
     public void setAssociatedObject(Object associatedObject) {
         this.associatedObject = associatedObject;
+    }
+
+    @Override
+    public void setOffsetDelegate(OffsetDelegate offsetDelegate) {
+        this.mOffsetDelegate = offsetDelegate;
+    }
+
+    @Override
+    public View getItemView() {
+        return itemView;
     }
 }

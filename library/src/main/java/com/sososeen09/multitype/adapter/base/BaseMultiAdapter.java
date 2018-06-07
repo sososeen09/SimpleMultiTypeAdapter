@@ -2,12 +2,12 @@ package com.sososeen09.multitype.adapter.base;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.contract.ViewBindClickContract;
+import com.sososeen09.multitype.adapter.contract.ViewHolderContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 
@@ -64,11 +64,11 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
     }
 
     @Override
-    public void bindViewClickListener(final RecyclerView.ViewHolder baseViewHolder) {
+    public void bindViewClickListener(final ViewHolderContract baseViewHolder) {
         if (baseViewHolder == null) {
             return;
         }
-        final View view = baseViewHolder.itemView;
+        final View view = baseViewHolder.getItemView();
         if (view == null) {
             return;
         }
@@ -80,6 +80,8 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
                 }
             });
         }
+
+        baseViewHolder.setOffsetDelegate(mOffsetDelegate);
     }
 
     /**
@@ -93,7 +95,6 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
             getOnItemClickListener().onItemClick(BaseMultiAdapter.this, v, position);
         }
     }
-
 
     @Override
     public void setOffsetDelegate(@NonNull OffsetDelegate offsetDelegate) {
