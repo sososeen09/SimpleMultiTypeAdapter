@@ -17,6 +17,7 @@ import com.sososeen09.multitype.adapter.base.QuickMultiTypeAdapter;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
+import com.sososeen09.multitype.adapter.listener.OnRequestLoadMoreListener;
 import com.sososeen09.simplemultitypeadapter.bean.Address;
 import com.sososeen09.simplemultitypeadapter.bean.UserInfo;
 import com.sososeen09.simplemultitypeadapter.binder.AddressBinder;
@@ -66,6 +67,24 @@ public class ChangeWrapperAdapterActivity extends AppCompatActivity implements V
         mQuickMultiTypeAdapter.addHeaderView(getHeader());
         mQuickMultiTypeAdapter.addFooterView(getFooter());
         rv.setAdapter(mQuickMultiTypeAdapter);
+
+        mQuickMultiTypeAdapter.setOnLoadMoreListener(new OnRequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                rv.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (mQuickMultiTypeAdapter.getWrapperd().getItemCount() < 50) {
+                            mQuickMultiTypeAdapter.loadMoreComplete();
+                            mQuickMultiTypeAdapter.addData(DataProvider.getNewData(mQuickMultiTypeAdapter.getItems().size(), 10));
+                        }else {
+                            mQuickMultiTypeAdapter.loadMoreEnd(false);
+                        }
+                    }
+                }, 2000);
+
+            }
+        });
     }
 
     private void configAdapter(BaseMultiAdapter baseMultiAdapter) {

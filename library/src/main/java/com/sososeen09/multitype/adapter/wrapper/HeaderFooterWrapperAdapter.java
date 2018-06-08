@@ -18,7 +18,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * @author sososeen09
  */
 public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    protected RecyclerView.Adapter mWrapperd;
+    private RecyclerView.Adapter mWrapperd;
     public static final int HEADER_VIEW = 0x00002222;
 
     public static final int FOOTER_VIEW = 0x00003333;
@@ -276,6 +276,18 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     /**
+     * reopen the layout more status, when adapter set new data, it may need to reload more
+     */
+    public void reOpenLoadMore() {
+        if (mOnRequestLoadMoreListener != null) {
+            mNextLoadEnable = true;
+            mLoadMoreEnable = true;
+            mLoading = false;
+            mLoadMoreView.setLoadMoreStatus(LoadMoreView.STATUS_DEFAULT);
+        }
+    }
+
+    /**
      * Append header to the rear of the mHeaderLayout.
      *
      * @param header
@@ -519,4 +531,7 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
         notifyDataSetChanged();
     }
 
+    public RecyclerView.Adapter getWrapperd() {
+        return mWrapperd;
+    }
 }

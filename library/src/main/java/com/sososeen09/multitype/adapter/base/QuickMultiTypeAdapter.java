@@ -102,7 +102,7 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
 
     public void setNewData(List<?> items) {
         mBaseMultiAdapter.setItems(items);
-
+        reOpenLoadMore();
         notifyDataSetChanged();
     }
 
@@ -204,7 +204,9 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
     public void setWrapperdAdapter(RecyclerView.Adapter adapter) {
         if (adapter instanceof BaseMultiAdapter) {
             ((BaseMultiAdapter) adapter).setOffsetDelegate(this);
+            mBaseMultiAdapter = (BaseMultiAdapter) adapter;
         }
+        reOpenLoadMore();
         super.setWrapperdAdapter(adapter);
     }
 
