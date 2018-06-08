@@ -33,4 +33,8 @@ public class MainActivity extends AppCompatActivity {
     public void homePage(View view) {
         startActivity(new Intent(this, HomePageActivity.class));
     }
+
+    public void changeWrapped(View view) {
+        startActivity(new Intent(this, ChangeWrapperAdapterActivity.class));
+    }
 }

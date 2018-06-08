@@ -23,7 +23,7 @@ import me.drakeet.multitype.OneToManyFlow;
  * @author sososeen09
  */
 
-public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements OnClickAdapterContract {
+public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements OnClickAdapterContract, OffsetDelegate {
 
     public static QuickMultiTypeAdapter newInstance() {
         BaseMultiAdapter baseMultiAdapter = new BaseMultiAdapter(new ArrayList<>());
@@ -33,17 +33,10 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
 
     private BaseMultiAdapter mBaseMultiAdapter;
 
-    protected QuickMultiTypeAdapter(BaseMultiAdapter baseMultiAdapter) {
+    public QuickMultiTypeAdapter(BaseMultiAdapter baseMultiAdapter) {
         super(baseMultiAdapter);
         this.mBaseMultiAdapter = baseMultiAdapter;
-
-        OffsetDelegate offsetDelegate = new OffsetDelegate() {
-            @Override
-            public int getOffsetPosition() {
-                return getHeaderLayoutCount();
-            }
-        };
-        mBaseMultiAdapter.setOffsetDelegate(offsetDelegate);
+        mBaseMultiAdapter.setOffsetDelegate(this);
     }
 
     @Override
@@ -59,7 +52,6 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
     @Override
     public void setOnItemChildClickListener(OnItemChildClickListener listener) {
         mBaseMultiAdapter.setOnItemChildClickListener(listener);
-
     }
 
     @Nullable
@@ -205,5 +197,19 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
 
     public List<?> getItems() {
         return mBaseMultiAdapter.getItems();
+    }
+
+
+    @Override
+    public void setWrapperdAdapter(RecyclerView.Adapter adapter) {
+        if (adapter instanceof BaseMultiAdapter) {
+            ((BaseMultiAdapter) adapter).setOffsetDelegate(this);
+        }
+        super.setWrapperdAdapter(adapter);
+    }
+
+    @Override
+    public int getOffsetPosition() {
+        return getHeaderLayoutCount();
     }
 }

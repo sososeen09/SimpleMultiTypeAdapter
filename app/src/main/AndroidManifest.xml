@@ -22,6 +22,8 @@
         </activity>
         <activity android:name=".LoadMoreActivity">
         </activity>
+        <activity android:name=".ChangeWrapperAdapterActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -18,7 +18,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
  * @author sososeen09
  */
 public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    protected final RecyclerView.Adapter mWrapperd;
+    protected RecyclerView.Adapter mWrapperd;
     public static final int HEADER_VIEW = 0x00002222;
 
     public static final int FOOTER_VIEW = 0x00003333;
@@ -512,6 +512,11 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
             return 0;
         }
         return 1;
+    }
+
+    public void setWrapperdAdapter(RecyclerView.Adapter adapter) {
+        this.mWrapperd = adapter;
+        notifyDataSetChanged();
     }
 
 }

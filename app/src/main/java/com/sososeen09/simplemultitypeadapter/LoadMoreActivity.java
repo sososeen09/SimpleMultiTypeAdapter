@@ -1,10 +1,10 @@
 package com.sososeen09.simplemultitypeadapter;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,8 +25,7 @@ import com.sososeen09.simplemultitypeadapter.bean.UserInfo;
 import com.sososeen09.simplemultitypeadapter.binder.AddressBinder;
 import com.sososeen09.simplemultitypeadapter.binder.FemaleBinder;
 import com.sososeen09.simplemultitypeadapter.binder.MaleBinder;
-
-import java.util.Random;
+import com.sososeen09.simplemultitypeadapter.model.DataProvider;
 
 import me.drakeet.multitype.ClassLinker;
 import me.drakeet.multitype.ItemViewBinder;
@@ -52,9 +51,6 @@ public class LoadMoreActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_multi_adapter);
         initView();
-
-        rv = findViewById(R.id.rv);
-        rv.setLayoutManager(new LinearLayoutManager(this));
 
         mQuickMultiTypeAdapter = QuickMultiTypeAdapter.newInstance();
 
@@ -106,7 +102,7 @@ public class LoadMoreActivity extends AppCompatActivity implements View.OnClickL
         });
 
 
-        ItemDatas items = getNewData(50);
+        ItemDatas items = DataProvider.getNewData(50);
 
         mQuickMultiTypeAdapter.setNewData(items);
 
@@ -130,7 +126,7 @@ public class LoadMoreActivity extends AppCompatActivity implements View.OnClickL
                         mQuickMultiTypeAdapter.loadMoreFail();
                     } else {
                         mQuickMultiTypeAdapter.loadMoreComplete();
-                        mQuickMultiTypeAdapter.addData(getNewData(mQuickMultiTypeAdapter.getItems().size(), 20));
+                        mQuickMultiTypeAdapter.addData(DataProvider.getNewData(mQuickMultiTypeAdapter.getItems().size(), 20));
                     }
                 } else {
                     mQuickMultiTypeAdapter.loadMoreEnd(false);
@@ -141,37 +137,10 @@ public class LoadMoreActivity extends AppCompatActivity implements View.OnClickL
         }, 2000);
     }
 
-
-    @NonNull
-    private ItemDatas getNewData(int num) {
-        return getNewData(0, num);
-    }
-
-    @NonNull
-    private ItemDatas getNewData(int from, int num) {
-        ItemDatas items = new ItemDatas();
-
-        Random random = new Random();
-        for (int i = from; i < from + num; i++) {
-            if (random.nextInt(10) % 2 == 0) {
-                items.add("this is String, value: " + i);
-            } else if (random.nextInt(10) % 3 == 0) {
-                UserInfo userInfo = new UserInfo("LiLei" + i, 1);
-                items.add(userInfo);
-            } else if (random.nextInt(10) % 4 == 0) {
-                UserInfo userInfo = new UserInfo("HanMeiMei" + i, 0);
-                items.add(userInfo);
-            } else if (random.nextInt(10) % 5 == 0) {
-                Address address = new Address("NanJing Road " + i, "ShangHai " + i, "China " + i);
-                items.add(address);
-            } else {
-                items.add(i);
-            }
-        }
-        return items;
-    }
-
     private void initView() {
+        rv = findViewById(R.id.rv);
+        rv.setLayoutManager(new LinearLayoutManager(this));
+
         tvAddHeader = findViewById(R.id.tv_add_header);
         tvRemoveHeader = findViewById(R.id.tv_remove_header);
         tvAddFooter = findViewById(R.id.tv_add_footer);
@@ -203,10 +172,10 @@ public class LoadMoreActivity extends AppCompatActivity implements View.OnClickL
                 mQuickMultiTypeAdapter.removeAllFooterView();
                 break;
             case R.id.tv_new_date:
-                mQuickMultiTypeAdapter.setNewData(getNewData(20));
+                mQuickMultiTypeAdapter.setNewData(DataProvider.getNewData(20));
                 break;
             case R.id.tv_add_data:
-                mQuickMultiTypeAdapter.addData(getNewData(mQuickMultiTypeAdapter.getItems().size(), 20));
+                mQuickMultiTypeAdapter.addData(DataProvider.getNewData(mQuickMultiTypeAdapter.getItems().size(), 20));
                 break;
 
             default:
