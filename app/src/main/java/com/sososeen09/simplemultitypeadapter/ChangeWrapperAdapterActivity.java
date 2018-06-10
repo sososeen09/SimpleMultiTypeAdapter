@@ -10,23 +10,23 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
-import com.sososeen09.multitype.adapter.base.BaseMultiAdapter;
-import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
-import com.sososeen09.multitype.adapter.base.QuickMultiTypeAdapter;
+import com.sososeen09.multitype.adapter.Mapper;
+import com.sososeen09.multitype.adapter.quick.QuickItemProvider;
+import com.sososeen09.multitype.adapter.BaseMultiAdapter;
+import com.sososeen09.multitype.adapter.quick.QuickViewHolder;
+import com.sososeen09.multitype.adapter.quick.QuickMultiTypeAdapter;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 import com.sososeen09.multitype.adapter.listener.OnRequestLoadMoreListener;
+import com.sososeen09.multitype.adapter.provider.AbsItemProvider;
+import com.sososeen09.multitype.adapter.provider.ItemHolderProviderSet;
 import com.sososeen09.simplemultitypeadapter.bean.Address;
 import com.sososeen09.simplemultitypeadapter.bean.UserInfo;
 import com.sososeen09.simplemultitypeadapter.binder.AddressBinder;
 import com.sososeen09.simplemultitypeadapter.binder.FemaleBinder;
 import com.sososeen09.simplemultitypeadapter.binder.MaleBinder;
 import com.sososeen09.simplemultitypeadapter.model.DataProvider;
-
-import me.drakeet.multitype.ClassLinker;
-import me.drakeet.multitype.ItemViewBinder;
 
 public class ChangeWrapperAdapterActivity extends AppCompatActivity implements View.OnClickListener {
     RecyclerView rv;
@@ -61,8 +61,8 @@ public class ChangeWrapperAdapterActivity extends AppCompatActivity implements V
         configAdapter(mBaseMultiAdapter1);
         configAdapter(mBaseMultiAdapter2);
 
-        mBaseMultiAdapter1.setItems(DataProvider.getNewData(15));
-        mBaseMultiAdapter2.setItems(DataProvider.getNewData(8));
+        mBaseMultiAdapter1.setData(DataProvider.getNewData(15));
+        mBaseMultiAdapter2.setData(DataProvider.getNewData(8));
 
         mQuickMultiTypeAdapter.addHeaderView(getHeader());
         mQuickMultiTypeAdapter.addFooterView(getFooter());
@@ -89,17 +89,17 @@ public class ChangeWrapperAdapterActivity extends AppCompatActivity implements V
 
     private void configAdapter(BaseMultiAdapter baseMultiAdapter) {
         // one to one
-        baseMultiAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
+        baseMultiAdapter.register(String.class, new QuickItemProvider<String, QuickViewHolder>(R.layout.item_multi) {
             @Override
-            public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
+            public void onBindViewHolder(@NonNull QuickViewHolder holder, @NonNull String item) {
                 holder.setText(R.id.tv, item);
             }
         });
 
         // one to one
-        baseMultiAdapter.register(Integer.class, new BaseItemViewBinder<Integer, BaseMultiViewHolder>(R.layout.item_multi) {
+        baseMultiAdapter.register(Integer.class, new QuickItemProvider<Integer, QuickViewHolder>(R.layout.item_multi) {
             @Override
-            public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull Integer item) {
+            public void onBindViewHolder(@NonNull QuickViewHolder holder, @NonNull Integer item) {
                 holder.setText(R.id.tv, "this is integer item: " + item).setBackgroundColor(R.id.tv, Color.BLUE);
             }
         });
@@ -109,10 +109,9 @@ public class ChangeWrapperAdapterActivity extends AppCompatActivity implements V
 
 
         // one to many
-        baseMultiAdapter.register(UserInfo.class).to(new FemaleBinder(), new MaleBinder()).withClassLinker(new ClassLinker<UserInfo>() {
-            @NonNull
+        baseMultiAdapter.registerOneToMany(UserInfo.class, ItemHolderProviderSet.wrap(new FemaleBinder(), new MaleBinder()), new Mapper<UserInfo>() {
             @Override
-            public Class<? extends ItemViewBinder<UserInfo, ?>> index(int position, @NonNull UserInfo userInfo) {
+            public Class<? extends AbsItemProvider<UserInfo, ?>> map(UserInfo userInfo) {
                 return userInfo.sexuality == 1 ? MaleBinder.class : FemaleBinder.class;
             }
         });

@@ -1,4 +1,4 @@
-package com.sososeen09.multitype.adapter.base;
+package com.sososeen09.multitype.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,36 +10,29 @@ import com.sososeen09.multitype.adapter.contract.ViewBindClickContract;
 import com.sososeen09.multitype.adapter.contract.ViewHolderContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
+import com.sososeen09.multitype.adapter.provider.AbsItemProvider;
+import com.sososeen09.multitype.adapter.provider.ItemHolderProviderSet;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import me.drakeet.multitype.MultiTypeAdapter;
-import me.drakeet.multitype.TypePool;
-
 /**
- * the BaseMultiAdapter is used to enhance the ability for{@link MultiTypeAdapter}
+ * the BaseMultiAdapter is used to enhance the ability for{@link SimpleMultiTypeAdapter}
  * add {@link OnItemClickListener} and {@link OnItemChildClickListener}
  *
  * @author sososeen09
  */
-public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapterContract, ViewBindClickContract {
+public class BaseMultiAdapter extends SimpleMultiTypeAdapter implements OnClickAdapterContract, ViewBindClickContract {
     private OnItemClickListener mOnItemClickListener;
     private OnItemChildClickListener mOnItemChildClickListener;
     private OffsetDelegate mOffsetDelegate;
 
     public BaseMultiAdapter() {
+        this(new ArrayList<>());
     }
 
     public BaseMultiAdapter(@NonNull List<?> items) {
         super(items);
-    }
-
-    public BaseMultiAdapter(@NonNull List<?> items, int initialCapacity) {
-        super(items, initialCapacity);
-    }
-
-    public BaseMultiAdapter(@NonNull List<?> items, @NonNull TypePool pool) {
-        super(items, pool);
     }
 
     @Override
@@ -101,11 +94,11 @@ public class BaseMultiAdapter extends MultiTypeAdapter implements OnClickAdapter
         this.mOffsetDelegate = offsetDelegate;
     }
 
-    public void setData(List<?> items) {
-        setItems(items);
+    public <T> void register(Class<T> clazz, AbsItemProvider<T, ?> binder) {
+        getItemProviderFactory().register(clazz, binder);
     }
 
-    public List<?> getData() {
-        return getItems();
+    public <T> void registerOneToMany(Class<T> clazz, ItemHolderProviderSet<T, ?> binder, Mapper<T> mapper) {
+        getItemProviderFactory().registerOneToMany(clazz, binder, mapper);
     }
 }

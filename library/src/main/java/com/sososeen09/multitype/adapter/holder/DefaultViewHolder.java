@@ -1,4 +1,4 @@
-package com.sososeen09.multitype.adapter;
+package com.sososeen09.multitype.adapter.holder;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

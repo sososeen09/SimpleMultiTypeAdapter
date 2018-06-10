@@ -1,13 +1,16 @@
-package com.sososeen09.multitype.adapter.base;
+package com.sososeen09.multitype.adapter.quick;
 
 import android.support.annotation.CallSuper;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.sososeen09.multitype.adapter.AbstractItemViewBinder;
+import com.sososeen09.multitype.adapter.BaseMultiAdapter;
+import com.sososeen09.multitype.adapter.provider.AbsItemProvider;
+import com.sososeen09.multitype.adapter.quick.QuickViewHolder;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -15,23 +18,21 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import me.drakeet.multitype.MultiTypeAdapter;
-
 /**
  * @author sososeen09
  */
 
-public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> extends AbstractItemViewBinder<T, VH> {
+public abstract class QuickItemProvider<T, VH extends QuickViewHolder> extends AbsItemProvider<T, VH> {
 
     private View mItemView;
     private @LayoutRes
     int layoutId;
 
-    public BaseItemViewBinder(@LayoutRes int layout) {
+    public QuickItemProvider(@LayoutRes int layout) {
         this.layoutId = layout;
     }
 
-    public BaseItemViewBinder(@NonNull View itemView){
+    public QuickItemProvider(@NonNull View itemView){
         this.mItemView = itemView;
     }
 
@@ -60,8 +61,9 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
      *
      * @param baseMultiViewHolder The ViewHolder returned by {@link #onCreateViewHolder(LayoutInflater, ViewGroup)}.
      */
+    @Override
     @CallSuper
-    protected void onViewHolderCreated(@NonNull VH baseMultiViewHolder) {
+    public void onViewHolderCreated(@NonNull VH baseMultiViewHolder) {
         bindViewClickListener(baseMultiViewHolder);
     }
 
@@ -71,7 +73,7 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
     }
 
     /**
-     * if you want to use subclass of BaseMultiViewHolder in the adapter,
+     * if you want to use subclass of QuickViewHolder in the adapter,
      * you must override the method to create new ViewHolder.
      *
      * @param view view
@@ -88,11 +90,11 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
         VH vh;
         // the z may be null as the generic type erasure
         if (z == null) {
-            vh = (VH) new BaseMultiViewHolder(view);
+            vh = (VH) new QuickViewHolder(view);
         } else {
             vh = createGenericKInstance(z, view);
         }
-        return vh != null ? vh : (VH) new BaseMultiViewHolder(view);
+        return vh != null ? vh : (VH) new QuickViewHolder(view);
     }
 
     /**
@@ -108,12 +110,12 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
             for (Type temp : types) {
                 if (temp instanceof Class) {
                     Class tempClass = (Class) temp;
-                    if (BaseMultiViewHolder.class.isAssignableFrom(tempClass)) {
+                    if (QuickViewHolder.class.isAssignableFrom(tempClass)) {
                         return tempClass;
                     }
                 } else if (temp instanceof ParameterizedType) {
                     Type rawType = ((ParameterizedType) temp).getRawType();
-                    if (rawType instanceof Class && BaseMultiViewHolder.class.isAssignableFrom((Class<?>) rawType)) {
+                    if (rawType instanceof Class && QuickViewHolder.class.isAssignableFrom((Class<?>) rawType)) {
                         return (Class<?>) rawType;
                     }
                 }
@@ -155,12 +157,12 @@ public abstract class BaseItemViewBinder<T, VH extends BaseMultiViewHolder> exte
         return null;
     }
 
-    private void bindViewClickListener(BaseMultiViewHolder baseMultiViewHolder) {
-        MultiTypeAdapter adapter = getAdapter();
+    private void bindViewClickListener(QuickViewHolder quickViewHolder) {
+        RecyclerView.Adapter adapter = getAdapter();
         if (adapter instanceof BaseMultiAdapter) {
             BaseMultiAdapter baseMultiAdapter = (BaseMultiAdapter) adapter;
-            baseMultiAdapter.bindViewClickListener(baseMultiViewHolder);
-            baseMultiViewHolder.setAdapter(baseMultiAdapter);
+            baseMultiAdapter.bindViewClickListener(quickViewHolder);
+            quickViewHolder.setAdapter(baseMultiAdapter);
         }
     }
 

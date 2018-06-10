@@ -11,21 +11,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sososeen09.multitype.adapter.ItemDatas;
-import com.sososeen09.multitype.adapter.base.BaseItemViewBinder;
-import com.sososeen09.multitype.adapter.base.BaseMultiViewHolder;
-import com.sososeen09.multitype.adapter.base.QuickMultiTypeAdapter;
+import com.sososeen09.multitype.adapter.Mapper;
+import com.sososeen09.multitype.adapter.quick.QuickItemProvider;
+import com.sososeen09.multitype.adapter.quick.QuickViewHolder;
+import com.sososeen09.multitype.adapter.quick.QuickMultiTypeAdapter;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
+import com.sososeen09.multitype.adapter.provider.AbsItemProvider;
+import com.sososeen09.multitype.adapter.provider.ItemHolderProviderSet;
 import com.sososeen09.simplemultitypeadapter.bean.Address;
 import com.sososeen09.simplemultitypeadapter.bean.UserInfo;
 import com.sososeen09.simplemultitypeadapter.binder.AddressBinder;
 import com.sososeen09.simplemultitypeadapter.binder.FemaleBinder;
 import com.sososeen09.simplemultitypeadapter.binder.MaleBinder;
 import com.sososeen09.simplemultitypeadapter.model.DataProvider;
-
-import me.drakeet.multitype.ClassLinker;
-import me.drakeet.multitype.ItemViewBinder;
 
 /**
  * @author sososeen09
@@ -51,17 +51,17 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
         mQuickMultiTypeAdapter = QuickMultiTypeAdapter.newInstance();
 
         // one to one
-        mQuickMultiTypeAdapter.register(String.class, new BaseItemViewBinder<String, BaseMultiViewHolder>(R.layout.item_multi) {
+        mQuickMultiTypeAdapter.register(String.class, new QuickItemProvider<String, QuickViewHolder>(R.layout.item_multi) {
             @Override
-            public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull String item) {
+            public void onBindViewHolder(@NonNull QuickViewHolder holder, @NonNull String item) {
                 holder.setText(R.id.tv, item);
             }
         });
 
         // one to one
-        mQuickMultiTypeAdapter.register(Integer.class, new BaseItemViewBinder<Integer, BaseMultiViewHolder>(R.layout.item_multi) {
+        mQuickMultiTypeAdapter.register(Integer.class, new QuickItemProvider<Integer, QuickViewHolder>(R.layout.item_multi) {
             @Override
-            public void onBindViewHolder(@NonNull BaseMultiViewHolder holder, @NonNull Integer item) {
+            public void onBindViewHolder(@NonNull QuickViewHolder holder, @NonNull Integer item) {
                 holder.setText(R.id.tv, "this is integer item: " + item).setBackgroundColor(R.id.tv, Color.BLUE);
             }
         });
@@ -71,10 +71,9 @@ public class QuickMultiAdapterActivity extends AppCompatActivity implements View
 
 
         // one to many
-        mQuickMultiTypeAdapter.register(UserInfo.class).to(new FemaleBinder(), new MaleBinder()).withClassLinker(new ClassLinker<UserInfo>() {
-            @NonNull
+        mQuickMultiTypeAdapter.registerOneToMany(UserInfo.class, ItemHolderProviderSet.wrap(new FemaleBinder(), new MaleBinder()), new Mapper<UserInfo>() {
             @Override
-            public Class<? extends ItemViewBinder<UserInfo, ?>> index(int position, @NonNull UserInfo userInfo) {
+            public Class<? extends AbsItemProvider<UserInfo, ?>> map(UserInfo userInfo) {
                 return userInfo.sexuality == 1 ? MaleBinder.class : FemaleBinder.class;
             }
         });

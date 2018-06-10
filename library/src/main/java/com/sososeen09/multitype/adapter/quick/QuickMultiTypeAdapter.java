@@ -1,23 +1,24 @@
-package com.sososeen09.multitype.adapter.base;
+package com.sososeen09.multitype.adapter.quick;
 
-import android.support.annotation.CheckResult;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 
-import com.sososeen09.multitype.adapter.AbstractItemViewBinder;
+import com.sososeen09.multitype.adapter.BaseMultiAdapter;
+import com.sososeen09.multitype.adapter.Mapper;
 import com.sososeen09.multitype.adapter.contract.OffsetDelegate;
 import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
+import com.sososeen09.multitype.adapter.provider.AbsItemProvider;
+import com.sososeen09.multitype.adapter.provider.ItemHolderProviderSet;
+import com.sososeen09.multitype.adapter.provider.ItemProviderFactory;
 import com.sososeen09.multitype.adapter.wrapper.HeaderFooterWrapperAdapter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import me.drakeet.multitype.OneToManyFlow;
 
 /**
  * @author sososeen09
@@ -74,10 +75,9 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
      * @param binder the item view binder
      * @param <T>    the item data type
      */
-    public <T> void register(@NonNull Class<? extends T> clazz, @NonNull AbstractItemViewBinder<T, ?> binder) {
+    public <T> void register(@NonNull Class<T> clazz, @NonNull AbsItemProvider<T, ?> binder) {
         mBaseMultiAdapter.register(clazz, binder);
     }
-
 
     /**
      * Registers a type class to multiple item view binders. If you have registered the
@@ -91,17 +91,15 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
      *
      * @param clazz the class of a item
      * @param <T>   the item data type
-     * @return {@link OneToManyFlow} for setting the binders
-     * @see #register(Class, AbstractItemViewBinder)
+     * @return {@link ItemProviderFactory} for setting the binders
+     * @see #register(Class, AbsItemProvider)
      */
-    @CheckResult
-    public @NonNull
-    <T> OneToManyFlow<T> register(@NonNull Class<? extends T> clazz) {
-        return mBaseMultiAdapter.register(clazz);
+    public <T> void registerOneToMany(Class<T> clazz, ItemHolderProviderSet<T, ?> binder, Mapper<T> mapper) {
+        mBaseMultiAdapter.registerOneToMany(clazz, binder, mapper);
     }
 
     public void setNewData(List<?> items) {
-        mBaseMultiAdapter.setItems(items);
+        mBaseMultiAdapter.setData(items);
         reOpenLoadMore();
         notifyDataSetChanged();
     }
@@ -196,7 +194,7 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
     }
 
     public List<?> getItems() {
-        return mBaseMultiAdapter.getItems();
+        return mBaseMultiAdapter.getData();
     }
 
 

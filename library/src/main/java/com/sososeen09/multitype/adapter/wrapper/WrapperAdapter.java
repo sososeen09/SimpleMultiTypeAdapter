@@ -17,7 +17,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 /**
  * @author sososeen09
  */
-public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class WrapperAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private RecyclerView.Adapter mWrapperd;
     public static final int HEADER_VIEW = 0x00002222;
 
@@ -37,8 +37,9 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
     private LoadMoreView mLoadMoreView = new SimpleLoadMoreView();
     private OnRequestLoadMoreListener mOnRequestLoadMoreListener;
     private RecyclerView mRecyclerView;
+    private int mAutoLoadMoreSize = 1;
 
-    public HeaderFooterWrapperAdapter(RecyclerView.Adapter adapter) {
+    public WrapperAdapter(RecyclerView.Adapter adapter) {
         this.mWrapperd = adapter;
     }
 
@@ -71,8 +72,6 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
         return viewHolder;
     }
 
-    private int mAutoLoadMoreSize = 1;
-
     public void setAutoLoadMoreSize(int autoLoadMoreSize) {
         if (autoLoadMoreSize > 1) {
             mAutoLoadMoreSize = autoLoadMoreSize;
@@ -80,7 +79,7 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     /**
-     * 提前加载数据
+     * pre load data
      *
      * @param position
      */
@@ -141,7 +140,6 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
                 break;
         }
     }
-
 
     @Override
     public int getItemCount() {
