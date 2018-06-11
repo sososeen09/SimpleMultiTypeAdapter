@@ -9,37 +9,52 @@ import java.util.List;
 
 
 /**
- * 用于映射JavaBean和对应的ItemHolderProvider
- * 同一个JavaBean可以映射多个ItemHolderProvider
+ * use to store the JavaBean class and the corresponding {@link AbsItemProvider}
+ *
+ * @author sososeen09
  */
 public class ItemProviderFactory {
-    //存放管理的class
+    /**
+     * use to store the JavaBean class witch registered
+     */
     List<Class<?>> classList = new ArrayList<>(10);
-    List<ItemHolderProviderSet> mProviderSets = new ArrayList<>(10);
-    //所有的已经注册的ItemHolderProvider，按照注册的顺序来排序
-    List<AbsItemProvider> mCachedItemViewHolderProvider = new ArrayList<>(10);
+
+    /**
+     * as one JavaBean class can map more than one {@link AbsItemProvider} object, so use the {@link ItemProviderSet}
+     * to store the JavaBean class mapping
+     */
+    List<ItemProviderSet> mProviderSets = new ArrayList<>(10);
+
+    /**
+     * all the registered  {@link AbsItemProvider},the index of it can be the viewType of {@link android.support.v7.widget.RecyclerView.ViewHolder}
+     *
+     * @see android.support.v7.widget.RecyclerView.Adapter#getItemViewType(int)
+     */
+    List<AbsItemProvider> mRegisteredItemProviderList = new ArrayList<>(10);
 
     public <T> void register(
             @NonNull Class<T> clazz,
             @NonNull AbsItemProvider<T, ?> binder) {
         //noinspection unchecked
-        registerOneToMany(clazz, ItemHolderProviderSet.wrap(binder), null);
+        registerOneToMany(clazz, ItemProviderSet.wrap(binder), null);
     }
 
     public <T> void registerOneToMany(
             @NonNull Class<T> clazz,
-            @NonNull ItemHolderProviderSet<T, ?> binder, Mapper<T> mapper) {
+            @NonNull ItemProviderSet<T, ?> binder, Mapper<T> mapper) {
         binder.setMapper(mapper);
         classList.add(clazz);
         mProviderSets.add(binder);
-        mCachedItemViewHolderProvider.addAll(binder);
+        mRegisteredItemProviderList.addAll(binder);
     }
 
     /**
-     * 注意一点就是，所管理的type不能重复，一个type只能对应一个ItemHolderProvider
+     * find the {@link AbsItemProvider} type int the Adapter with JavaBean obj,
+     * one {@link AbsItemProvider} can only be the unique viewType
+     * the type
      *
-     * @param item
-     * @return
+     * @param item JavaBean object
+     * @return viewType
      */
     @SuppressWarnings({"unchecked", "SuspiciousMethodCalls"})
     public int findMappedType(Object item) {
@@ -48,13 +63,14 @@ public class ItemProviderFactory {
     }
 
     /**
-     * 实际上这个类型对应的就是索引
+     * find the corresponding {@link AbsItemProvider} obj with viewType,
+     * the viewType is the index of {@link AbsItemProvider} obj in mRegisteredItemProviderList in fact
      *
      * @param viewType
      * @return
      */
     public AbsItemProvider<?, ?> findProviderByType(int viewType) {
-        AbsItemProvider absItemProvider = mCachedItemViewHolderProvider.get(viewType);
+        AbsItemProvider absItemProvider = mRegisteredItemProviderList.get(viewType);
         if (absItemProvider == null) {
             throw new IllegalStateException(String.format("the viewType : %s corresponding to " +
                     "AbsItemProvider must not be null", viewType));

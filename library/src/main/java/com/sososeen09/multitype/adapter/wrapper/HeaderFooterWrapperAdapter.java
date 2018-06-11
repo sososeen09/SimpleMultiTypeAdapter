@@ -80,7 +80,7 @@ public class HeaderFooterWrapperAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     /**
-     * 提前加载数据
+     * Trigger loading in advance
      *
      * @param position
      */

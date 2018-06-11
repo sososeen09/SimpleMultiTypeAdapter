@@ -20,7 +20,7 @@ import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 import com.sososeen09.multitype.adapter.listener.OnRequestLoadMoreListener;
 import com.sososeen09.multitype.adapter.provider.AbsItemProvider;
-import com.sososeen09.multitype.adapter.provider.ItemHolderProviderSet;
+import com.sososeen09.multitype.adapter.provider.ItemProviderSet;
 import com.sososeen09.simplemultitypeadapter.bean.Address;
 import com.sososeen09.simplemultitypeadapter.bean.UserInfo;
 import com.sososeen09.simplemultitypeadapter.binder.AddressBinder;
@@ -109,7 +109,7 @@ public class ChangeWrapperAdapterActivity extends AppCompatActivity implements V
 
 
         // one to many
-        baseMultiAdapter.registerOneToMany(UserInfo.class, ItemHolderProviderSet.wrap(new FemaleBinder(), new MaleBinder()), new Mapper<UserInfo>() {
+        baseMultiAdapter.registerOneToMany(UserInfo.class, ItemProviderSet.wrap(new FemaleBinder(), new MaleBinder()), new Mapper<UserInfo>() {
             @Override
             public Class<? extends AbsItemProvider<UserInfo, ?>> map(UserInfo userInfo) {
                 return userInfo.sexuality == 1 ? MaleBinder.class : FemaleBinder.class;

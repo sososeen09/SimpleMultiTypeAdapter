@@ -11,7 +11,7 @@ import com.sososeen09.multitype.adapter.contract.ViewHolderContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 import com.sososeen09.multitype.adapter.provider.AbsItemProvider;
-import com.sososeen09.multitype.adapter.provider.ItemHolderProviderSet;
+import com.sososeen09.multitype.adapter.provider.ItemProviderSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +98,7 @@ public class BaseMultiAdapter extends SimpleMultiTypeAdapter implements OnClickA
         getItemProviderFactory().register(clazz, binder);
     }
 
-    public <T> void registerOneToMany(Class<T> clazz, ItemHolderProviderSet<T, ?> binder, Mapper<T> mapper) {
+    public <T> void registerOneToMany(Class<T> clazz, ItemProviderSet<T, ?> binder, Mapper<T> mapper) {
         getItemProviderFactory().registerOneToMany(clazz, binder, mapper);
     }
 }

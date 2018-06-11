@@ -11,6 +11,11 @@ import com.sososeen09.multitype.adapter.provider.ItemProviderFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * the basic multi type adapter, it's viewType is supplied by {@link ItemProviderFactory}
+ *
+ * @author sososeen09
+ */
 public class SimpleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private @NonNull
@@ -53,7 +58,7 @@ public class SimpleMultiTypeAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @SuppressWarnings("unchecked")
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Object item = mData.get(position);
-        //注册的时候已经约束了类型，所以在使用的时候可以不用考虑泛型问题
+        //the parameterized type of AbsItemProvider has been constrainted when registered, so in this place can ignore genericity
         AbsItemProvider providerByType = mItemProviderFactory.findProviderByType(holder.getItemViewType());
         providerByType.onBindViewHolder(holder, item);
     }

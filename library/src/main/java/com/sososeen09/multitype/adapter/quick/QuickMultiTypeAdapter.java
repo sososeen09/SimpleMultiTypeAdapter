@@ -12,7 +12,7 @@ import com.sososeen09.multitype.adapter.contract.OnClickAdapterContract;
 import com.sososeen09.multitype.adapter.listener.OnItemChildClickListener;
 import com.sososeen09.multitype.adapter.listener.OnItemClickListener;
 import com.sososeen09.multitype.adapter.provider.AbsItemProvider;
-import com.sososeen09.multitype.adapter.provider.ItemHolderProviderSet;
+import com.sososeen09.multitype.adapter.provider.ItemProviderSet;
 import com.sososeen09.multitype.adapter.provider.ItemProviderFactory;
 import com.sososeen09.multitype.adapter.wrapper.HeaderFooterWrapperAdapter;
 
@@ -94,7 +94,7 @@ public class QuickMultiTypeAdapter extends HeaderFooterWrapperAdapter implements
      * @return {@link ItemProviderFactory} for setting the binders
      * @see #register(Class, AbsItemProvider)
      */
-    public <T> void registerOneToMany(Class<T> clazz, ItemHolderProviderSet<T, ?> binder, Mapper<T> mapper) {
+    public <T> void registerOneToMany(Class<T> clazz, ItemProviderSet<T, ?> binder, Mapper<T> mapper) {
         mBaseMultiAdapter.registerOneToMany(clazz, binder, mapper);
     }
 
