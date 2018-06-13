@@ -59,7 +59,13 @@ public class ItemProviderFactory {
     @SuppressWarnings({"unchecked", "SuspiciousMethodCalls"})
     public int findMappedType(Object item) {
         int clazzIndex = classList.indexOf(item.getClass());
-        return clazzIndex + mProviderSets.get(clazzIndex).getIndex(item);
+        //as one JavaBean may map to many ItemProvider
+        int offset = 0;
+        for (int i = 0; i < clazzIndex; i++) {
+            offset += mProviderSets.get(i).size();
+        }
+
+        return offset + mProviderSets.get(clazzIndex).getIndex(item);
     }
 
     /**
