@@ -1,8 +1,8 @@
-### SimpleMultiTypeAdapter
+# SimpleMultiTypeAdapter
 
 [![](https://jitpack.io/v/sososeen09/SimpleMultiTypeAdapter.svg)](https://jitpack.io/#sososeen09/SimpleMultiTypeAdapter)
 
-### Getting started
+# Getting started
 
 Step 1 Add it in your root build.gradle at the end of repositories:
 ```
@@ -21,13 +21,13 @@ dependencies {
 }
 ```
 
-### Features
+# Features
 - Header
 - Footer
 - OnItemClickListener
 - OnItemChildClickListener
 
-### How to use
+# How to use
 1. Get the adapter
 ```
 QuickMultiTypeAdapter quickMultiTypeAdapter = QuickMultiTypeAdapter.newInstance();
@@ -88,11 +88,12 @@ rv.setAdapter(quickMultiTypeAdapter);
 ```
 
 see the [sample](https://github.com/sososeen09/SimpleMultiTypeAdapter) for more info
-### Thanks
+
+# Thanks
 
 - [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
 - [MultiType](https://github.com/drakeet/MultiType)
 - [HeaderViewListAdapter](http://androidxref.com/7.1.2_r36/xref/frameworks/base/core/java/android/widget/HeaderViewListAdapter.java)
 
-### 一些不错的库
+# 一些不错的库
 - [LoadMoreWrapper](https://github.com/nukc/LoadMoreWrapper)
